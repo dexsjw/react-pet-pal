@@ -1,0 +1,97 @@
+1. Login Page
+Google OAuth -> pic, email etc (tbc)
+login: {
+    username: string,
+    password: string
+}
+
+
+
+2. View Pet
+ownerProfile: {
+    ownerId: uuid,
+    ownerName: string,
+    ownerMatches: ownerId[] -> an array of ownerIds,
+    areaLocation: string,
+    petPicture: url string,
+    petName: string,
+    petGender: enum(male, female),
+    petAge: number,
+    petSize: enum(small, medium, large),
+    petDescription: string,
+    petIsNeutered: boolean
+}
+
+ownerProfiles： ownerProfile[] -> an array of ownerProfile
+
+
+
+3. Owner Profile
+ownerProfile: {
+    ownerId: uuid,
+    areaLocation: string (e.g. Bishan, Changi, Orchard),
+    ownerName: string,
+    petPicture: url string (generate random url string -> own photo if have time), 
+    petName: string,
+    petBreed: string,
+    petGender: enum(male, female),
+    petAge: number,
+    petSize: enum(small, medium, large),
+    petDescription: string,
+    petIsNeutered: boolean
+}
+
+Delete profile? -> if got time
+
+
+
+4. Chat Page -> (if got time)
+chatRoom: {    
+    chatRoomId: uuid,
+    chatRoomPicture: url string -> (if got time)
+    owners: ownerId[] -> an array of ownerIds (for starters, only 2 ownerIds),
+    9:50: chatMessage,
+    9:51: chatMessage
+}
+
+chatMessage: {
+    ownerId: uuid,
+    message: string,
+    isDeleted: boolean
+}
+
+chatRooms: chatRoom[] -> an array of chatRoom
+
+
+
+### Routes ###
+- /login
+- /register
+- /profile/:ownerId
+- /view-pet
+- /view-pet/:ownerId
+- /chat
+
+
+
+
+
+
+
+
+{petPicture1/ownerName1         9:51's message}
+{petPicture2/ownerName2         9:50's message}
+{petPicture3/ownerName3         9:49's message}
+{petPicture4/ownerName4         9:48's message}
+{petPicture5/ownerName5         9:47's message}
+{petPicture6/ownerName6         9:46's message}
+
+owner1Message
+owner1Message
+owner1Message
+                    owner2Message
+                    owner2Message
+                    owner2Message
+owner1Message
+owner1Message
+owner1Message
