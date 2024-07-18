@@ -1,0 +1,15 @@
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorPage from "./ErrorPage";
+
+const EBoundary = ({ children }) => {
+  return <ErrorBoundary fallbackRender={ErrorPage}>{children}</ErrorBoundary>;
+};
+
+export default EBoundary;
+
+// * https://www.npmjs.com/package/react-error-boundary
+
+// ? Hook can be used to pass those errors to the nearest error boundary:
+// import { useErrorBoundary } from "react-error-boundary";
+// const { showBoundary } = useErrorBoundary();
+// error => { showBoundary(error); }

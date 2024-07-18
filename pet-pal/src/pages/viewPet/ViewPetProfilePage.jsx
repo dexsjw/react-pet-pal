@@ -1,6 +1,6 @@
-import BackButton from "../../components/BackButton";
+import { BackButton } from "../../components/Components";
 
-const ViewPetProfile = () => {
+const ViewPetProfilePage = () => {
   return (
     <div
       style={{
@@ -13,31 +13,31 @@ const ViewPetProfile = () => {
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
-       <img
+      <img
         src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
         style={{ height: "260px", width: "260px" }}
       />
@@ -45,4 +45,4 @@ const ViewPetProfile = () => {
   );
 };
 
-export default ViewPetProfile;
+export default ViewPetProfilePage;
