@@ -1,6 +1,10 @@
 import { BackButton } from "../../components/Components";
+import OwnerContext from "../../contexts/OwnerContext";
+import { useContext } from "react";
 
 const ViewPetProfilePage = () => {
+  const context = useContext(OwnerContext);
+
   return (
     <div
       style={{
@@ -10,37 +14,19 @@ const ViewPetProfilePage = () => {
     >
       <BackButton />
       <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
+        src={context.owner.petPicture}
         style={{ height: "260px", width: "260px" }}
       />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
-      <img
-        src="https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-        style={{ height: "260px", width: "260px" }}
-      />
+      <p>Owner: {context.owner.ownerName}</p>
+      <p>Description: {context.owner.petDescription}</p>
+      <button
+        onClick={() =>
+          context.dispatchOwner({
+            type: "setOwner",
+            payload: { ...context.owner, ownerName: "Jack" },
+          })
+        }
+      ></button>
     </div>
   );
 };

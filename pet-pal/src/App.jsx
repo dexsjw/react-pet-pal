@@ -15,6 +15,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Navbar from "./layout/Navbar";
+import { OwnerProvider } from "./contexts/OwnerContext";
 
 function App() {
   const router = createBrowserRouter(
@@ -37,7 +38,9 @@ function App() {
   return (
     <>
       <EBoundary>
-        <RouterProvider router={router} />
+        <OwnerProvider>
+          <RouterProvider router={router} />
+        </OwnerProvider>
       </EBoundary>
     </>
   );
