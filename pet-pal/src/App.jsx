@@ -1,4 +1,12 @@
-import ViewPetProfile from "./pages/ViewPet/ViewPetProfile";
+import {
+  ChatPage,
+  LoginPage,
+  RegisterPage,
+  OwnerProfilePage,
+  ViewPetPage,
+  ViewPetProfilePage,
+} from "./pages/Pages";
+import EBoundary from "./pages/error/EBoundary";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -7,19 +15,20 @@ import {
   Outlet,
 } from "react-router-dom";
 import Navbar from "./layout/Navbar";
+import { OwnerProvider } from "./contexts/OwnerContext";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/" element={<Outlet />}>
-          <Route path="/login" element={<>Login</>} />
-          <Route path="/register" element={<>Register</>} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route element={<Navbar />}>
-            <Route path="/profile/:id" element={<div>Own Profile Page</div>} />
-            <Route path="/view-pet" element={<div>View Pet Page</div>} />
-            <Route path="/view-pet/:id" element={<ViewPetProfile />} />
-            <Route path="/chat" element={<div>Chat Page</div>} />
+            <Route path="/profile/:id" element={<OwnerProfilePage />} />
+            <Route path="/view-pet" element={<ViewPetPage />} />
+            <Route path="/view-pet/:id" element={<ViewPetProfilePage />} />
+            <Route path="/chat" element={<ChatPage />} />
           </Route>
         </Route>
       </>
@@ -28,7 +37,11 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <EBoundary>
+        <OwnerProvider>
+          <RouterProvider router={router} />
+        </OwnerProvider>
+      </EBoundary>
     </>
   );
 }
