@@ -1,6 +1,6 @@
 1. Login Page
 Google OAuth -> pic, email etc (tbc)
-login: {
+ownerAuth: {
     ownerId: uuid,
     username: string,
     password: string,
