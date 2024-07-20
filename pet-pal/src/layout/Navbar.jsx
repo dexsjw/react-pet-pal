@@ -1,27 +1,57 @@
 import { Link } from "react-router-dom";
 import "./NavBar.module.css";
 import { Outlet } from "react-router-dom";
+import pawicon from "../common/images/paw-icon.png";
 
 const Navbar = () => {
   return (
     <div>
       <nav
         style={{
-          width: "200px",
+          width: "18vw",
           float: "left",
           backgroundColor: "rgba(173, 216, 230, 255)",
           height: "100vh",
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            margin: "1rem 0 0 1rem",
+            gap: "0.5rem",
+          }}
+        >
+          <img
+            src={pawicon}
+            style={{
+              width: "2rem",
+              height: "2rem",
+              borderRadius: "9999rem",
+              padding: "0.5rem",
+              backgroundColor: "rgba(150, 150, 150)",
+            }}
+          />
+          <h1
+            style={{
+              fontSize: "1.5rem",
+              color: "#6B6B6B",
+            }}
+          >
+            PET PAL
+          </h1>
+        </div>
+
         <ul>
-          <li>
+          {/* <li>
             <Link to="/">Home</Link>
+          </li> */}
+          <li>
+            <Link to="/view-pet">View Pets</Link>
           </li>
           <li>
             <Link to="/profile/123">My Profile</Link>
-          </li>
-          <li>
-            <Link to="/view-pet">View Pets</Link>
           </li>
           <li>
             <Link to="/chat">Chat</Link>
@@ -31,7 +61,7 @@ const Navbar = () => {
           </li>
         </ul>
       </nav>
-      <div style={{ marginLeft: "200px" }}>
+      <div style={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}>
         <Outlet />
       </div>
     </div>
