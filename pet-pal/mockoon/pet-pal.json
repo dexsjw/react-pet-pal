@@ -159,14 +159,14 @@
       "id": "2t7f",
       "name": "OwnerAuth",
       "documentation": "Pet Pal owner credentials and authentication state",
-      "value": "[\n  {{#repeat 10 15}}\n    {\n      \"ownerId\": \"{{guid}}\",\n      \"username\": \"{{firstName}}\",\n      \"password\": \"{{lorem 1}}\",\n      \"isLoggedIn\": false\n    }\n  {{/repeat}}\n]"
+      "value": "[\n  {{#repeat 5 10}}\n    {\n      \"ownerId\": \"{{guid}}\",\n      \"username\": \"{{firstName}}\",\n      \"password\": \"{{lorem 1}}\",\n      \"isLoggedIn\": false\n    }\n  {{/repeat}}\n]"
     },
     {
       "uuid": "04ec82b8-970a-4ece-a082-a4424c429c8b",
       "id": "ywxw",
       "name": "OwnerProfile",
       "documentation": "Pet Pal owner profile",
-      "value": "[\n  {{#each (dataRaw '2t7f')}}\n    {\n      \"ownerId\": \"{{ownerId}}\"\n      \"ownerName\": \"{{firstName}} {{lastName}}\",\n      \"ownerMatches\": [\n        {{#each (someOf (dataRaw '2t7f') 1 5)}}\n          \"{{ownerId}}\",\n        {{/each}}\n      ],\n      \"areaLocation\": \"{{street}}\",\n      \"petPicture\": [], \n      \"petName\": \"{{firstName}}\",\n      \"petBreed\": \"{{faker 'animal.dog'}}\",\n      \"petGender\": \"{{faker 'person.sex'}}\",\n      \"petAge\": {{int 1 15}},\n      \"petSize\": \"{{oneOf (array 'Small' 'Medium' 'Large')}}\",\n      \"petDescription\": \"{{lorem 20}}\",\n      \"petIsNeutered\": {{boolean}}\n    },\n  {{/each}}\n]"
+      "value": "[\n  {{#each (dataRaw '2t7f')}}\n    {\n      \"ownerId\": \"{{ownerId}}\",\n      \"ownerName\": \"{{firstName}} {{lastName}}\",\n      \"ownerMatches\": [],\n      \"areaLocation\": \"{{street}}\",\n      \"petPicture\": [], \n      \"petName\": \"{{firstName}}\",\n      \"petBreed\": \"{{faker 'animal.dog'}}\",\n      \"petGender\": \"{{faker 'person.sex'}}\",\n      \"petAge\": {{int 1 15}},\n      \"petSize\": \"{{oneOf (array 'Small' 'Medium' 'Large')}}\",\n      \"petDescription\": \"{{lorem 20}}\",\n      \"petIsNeutered\": {{boolean}}\n    }\n    {{#unless @last}},{{/unless}}\n  {{/each}}\n]"
     }
   ],
   "callbacks": []
