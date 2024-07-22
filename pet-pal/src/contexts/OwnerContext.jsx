@@ -1,9 +1,12 @@
 // ProductContext.js
 import { createContext, useReducer } from "react";
+import { initialState, ownerReducer } from "../reducers/ownerReducer";
 
 const OwnerContext = createContext();
 
 export function OwnerProvider({ children }) {
+  const [state, dispatch] = useReducer(ownerReducer, initialState);
+
   const reducer = (state, action) => {
     switch (action.type) {
       case "setOwner":
