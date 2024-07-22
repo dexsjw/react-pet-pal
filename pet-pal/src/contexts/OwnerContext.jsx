@@ -1,9 +1,12 @@
 // ProductContext.js
 import { createContext, useReducer } from "react";
+import { initialState, ownerReducer } from "../reducers/ownerReducer";
 
 const OwnerContext = createContext();
 
 export function OwnerProvider({ children }) {
+  const [state, dispatch] = useReducer(ownerReducer, initialState);
+
   const reducer = (state, action) => {
     switch (action.type) {
       case "setOwner":
@@ -23,10 +26,10 @@ export function OwnerProvider({ children }) {
     ownerId: "abc123", // string
     areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
     ownerName: "Ben", // string
-    petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
+    petPicture: ["https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", "https://images.dog.ceo/breeds/hound-english/n02089973_1623.jpg"], // url string array (generate random url string -> own photo if have time)
     petName: "Winnie", // string
     petBreed: "I don't know", // string
-    petGender: "Male?", // male / female,
+    petGender: "Male", // Male / Female,
     petAge: 8, // number
     petSize: "Medium", // small / medium / large
     petDescription: "Good Boye", // string

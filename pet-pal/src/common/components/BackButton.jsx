@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 const BackButton = () => {
   const navigate = useNavigate();
@@ -7,16 +8,18 @@ const BackButton = () => {
   };
 
   return (
-    <button
+    <Button
       style={{
-        border: "none",
-        width: "2rem",
-        backgroundColor: "rgba(0,0,0,0)",
+        width: "fit-content"
+        // border: "none",
+        // width: "2rem",
+        // backgroundColor: "rgba(0,0,0,0)",
       }}
       onClick={navigateBack}
+      size="small"
     >
       ←Back
-    </button>
+    </Button>
   );
 };
 
