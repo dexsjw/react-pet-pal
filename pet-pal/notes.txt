@@ -3,7 +3,6 @@ Google OAuth -> pic, email etc (tbc)
 ownerAuth: {
     ownerId: uuid,
     email: string,
-    username: string,
     password: string,
     isLoggedIn: boolean
 }
