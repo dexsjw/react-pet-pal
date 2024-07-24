@@ -17,6 +17,7 @@ import Navbar from "./layout/Navbar";
 import { OwnerProvider } from "./contexts/OwnerContext";
 import PageNotFound from "./pages/error/PageNotFound";
 import LoginRedirect from "./pages/error/LoginRedirect";
+import { OwnerAuthProvider } from "./contexts/OwnerAuthContext";
 
 function App() {
   const router = createBrowserRouter(
@@ -67,9 +68,11 @@ function App() {
 
   return (
     <>
-      <OwnerProvider>
-        <RouterProvider router={router} />
-      </OwnerProvider>
+      <OwnerAuthProvider>
+        <OwnerProvider>
+          <RouterProvider router={router} />
+        </OwnerProvider>
+      </OwnerAuthProvider>
     </>
   );
 }
