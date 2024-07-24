@@ -1,32 +1,47 @@
 // src/pages/owner-profile/OwnerProfile.jsx
-import React, { useState, useEffect, useContext } from 'react';
-import { Container, TextField, Button, Typography, Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Select } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import OwnerContext from '../../contexts/OwnerContext';
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import useOwnerContext from "../../contexts/useOwnerContext";
 
-function OwnerProfilePage() {
-  const { state, dispatch } = useContext(OwnerContext);
+function OwnerProfile() {
+  const { state, dispatch } = useOwnerContext();
   const [formData, setFormData] = useState({
-    petName: '',
-    location: '',
-    gender: '',
-    breed: '',
-    age: '',
-    size: '',
-    neutered: '',
-    description: '',
-    ownerName: '',
-    email: '',
-    password: '',
-    petPhoto: ''
+    petName: "",
+    location: "",
+    gender: "",
+    breed: "",
+    age: "",
+    size: "",
+    neutered: "",
+    description: "",
+    ownerName: "",
+    email: "",
+    password: "",
+    petPhoto: "",
   });
 
   const [photoPreview, setPhotoPreview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedInUserEmail = localStorage.getItem('loggedInUser');
-    const userData = state.users.find(user => user.email === loggedInUserEmail);
+    const loggedInUserEmail = localStorage.getItem("loggedInUser");
+    const userData = state.users.find(
+      (user) => user.email === loggedInUserEmail
+    );
     if (userData) {
       setFormData(userData);
       setPhotoPreview(userData.petPhoto);
@@ -35,14 +50,14 @@ function OwnerProfilePage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setFormData(prevState => ({ ...prevState, petPhoto: reader.result }));
+      setFormData((prevState) => ({ ...prevState, petPhoto: reader.result }));
       setPhotoPreview(reader.result);
     };
     reader.readAsDataURL(file);
@@ -50,48 +65,91 @@ function OwnerProfilePage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({ type: 'UPDATE_USER', payload: formData });
-    localStorage.setItem('users', JSON.stringify(state.users));
-    alert('Profile updated successfully');
+    const updatedUsers = state.users.map((user) =>
+      user.email === formData.email ? formData : user
+    );
+    dispatch({ type: "UPDATE_USER", payload: formData });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    alert("Profile updated successfully");
   };
 
   const handleDelete = () => {
-    dispatch({ type: 'DELETE_USER', payload: formData.email });
-    const updatedUsers = state.users.filter(user => user.email !== formData.email);
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    dispatch({ type: "DELETE_USER", payload: formData.email });
+    const updatedUsers = state.users.filter(
+      (user) => user.email !== formData.email
+    );
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
     console.log(localStorage);
-    alert('Profile deleted successfully');
-    navigate('/');
+    alert("Profile deleted successfully");
+    navigate("/");
   };
 
-  const buttonStyle = { width: '260px', mb: 2 }; // Consistent button style
+  const buttonStyle = { width: "260px", mb: 2 }; // Consistent button style
 
   return (
     <Container maxWidth="md">
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
-        <Box sx={{ width: '300px', height: '300px', border: '1px solid #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {photoPreview ? <img src={photoPreview} alt="Pet" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Typography variant="body1">Pet Photo</Typography>}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          mb: 3,
+        }}
+      >
+        <Box
+          sx={{
+            width: "300px",
+            height: "300px",
+            border: "1px solid #ccc",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {photoPreview ? (
+            <img
+              src={photoPreview}
+              alt="Pet"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          ) : (
+            <Typography variant="body1">Pet Photo</Typography>
+          )}
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          <Button variant="contained" component="label" sx={buttonStyle}>
+            Upload Pet Photo
+            <input type="file" hidden onChange={handleFileChange} />
+          </Button>
           <Button
+            type="submit"
             variant="contained"
-            component="label"
+            color="primary"
+            onClick={handleSubmit}
             sx={buttonStyle}
           >
-            Upload Pet Photo
-            <input
-              type="file"
-              hidden
-              onChange={handleFileChange}
-            />
-          </Button>
-          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={buttonStyle}>
             Save
           </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={buttonStyle}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/")}
+            sx={buttonStyle}
+          >
             Cancel
           </Button>
-          <Button variant="contained" color="error" onClick={handleDelete} sx={buttonStyle}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleDelete}
+            sx={buttonStyle}
+          >
             Delete
           </Button>
         </Box>
@@ -117,9 +175,18 @@ function OwnerProfilePage() {
         />
         <FormControl component="fieldset" sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Gender</FormLabel>
-          <RadioGroup row name="gender" value={formData.gender} onChange={handleChange}>
+          <RadioGroup
+            row
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+          >
             <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label="Female"
+            />
           </RadioGroup>
         </FormControl>
         <TextField
@@ -150,7 +217,12 @@ function OwnerProfilePage() {
         </FormControl>
         <FormControl component="fieldset" sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Neutered</FormLabel>
-          <RadioGroup row name="neutered" value={formData.neutered} onChange={handleChange}>
+          <RadioGroup
+            row
+            name="neutered"
+            value={formData.neutered}
+            onChange={handleChange}
+          >
             <FormControlLabel value="yes" control={<Radio />} label="Yes" />
             <FormControlLabel value="no" control={<Radio />} label="No" />
           </RadioGroup>
@@ -198,4 +270,4 @@ function OwnerProfilePage() {
   );
 }
 
-export default OwnerProfilePage;
+export default OwnerProfile;
