@@ -1,16 +1,21 @@
-1. Login Page
-Google OAuth -> pic, email etc (tbc)
-ownerAuth: {
-    ownerId: uuid,
-    email: string,
-    password: string,
-    isLoggedIn: boolean
-}
+## 1. Login Page
+## Google OAuth -> pic, email etc (tbc)
+## This object will not be used as idea was scraped.
+## Everything will be in owner object
+## ownerAuth: {
+##     ownerId: uuid,
+##     email: string,
+##     password: string,
+##     isLoggedIn: boolean
+## }
 
 
 
 2. View Pet
-ownerProfile: {
+owner: {
+    email: string,
+    password: string,
+    isLoggedIn: boolean,
     ownerId: uuid,
     ownerName: string,
     ownerMatches: ownerId[] -> an array of ownerIds,
@@ -25,12 +30,15 @@ ownerProfile: {
     petIsNeutered: boolean
 }
 
-ownerProfiles： ownerProfile[] -> an array of ownerProfile
+owners： owners[] -> an array of owners
 
 
 
 3. Owner Profile
-ownerProfile: {
+owner: {
+    email: string,
+    password: string,
+    isLoggedIn: boolean,
     ownerId: uuid,
     ownerName: string,
     ownerMatches: ownerId[] -> an array of ownerIds,
