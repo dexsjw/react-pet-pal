@@ -4,14 +4,14 @@ const OWNER_AUTH_PATH = "/ownerAuth";
 const OWNER_PROFILE_PATH = "/ownerProfile";
 
 // CRUD for Owner Auth
-export const getOwnerAuths = async () => {
-    let response = {};
+export const getOwnerAuthList = async () => {
+    let response = [];
     try {
         response = await petPalMockApi.get(OWNER_AUTH_PATH);
     } catch (error) {
         console.error(`Error encountered when GET ${OWNER_AUTH_PATH}`);
         console.error("Error message: ", error.message);
-        response = {};
+        response = [];
     }
     return response;
 }
@@ -68,13 +68,13 @@ export const deleteOwnerAuth = async (ownerId) => {
 
 // CRUD for Owner Profile
 export const getOwnerProfiles = async () => {
-    let response = {};
+    let response = [];
     try {
         response = await petPalMockApi.get(OWNER_PROFILE_PATH);
     } catch (error) {
         console.error(`Error encountered when GET ${OWNER_PROFILE_PATH}`);
         console.error("Error message: ", error.message);
-        response = {};
+        response = [];
     }
     return response;
 }

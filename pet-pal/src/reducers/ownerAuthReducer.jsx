@@ -1,3 +1,5 @@
+import { createOwnerAuth, deleteOwnerAuth, getOwnerAuth, updateOwnerAuth } from "../service/PetPalService";
+
 export const initialOwnerAuth = {
     ownerId: "",
     email: "",
@@ -7,24 +9,20 @@ export const initialOwnerAuth = {
 
 export const ownerAuthReducer = (state, action) => {
     switch (action.type) {
-        case "GET_OWNER_AUTHS": {
-            return;
-        }
-
         case "GET_OWNER_AUTH": {
-            return;
+            return getOwnerAuth(action.ownerId);
         }
 
         case "CREATE_OWNER_AUTH": {
-            return;
+            return createOwnerAuth(action.ownerAuth);
         }
 
         case "UPDATE_OWNER_AUTH": {
-            return;
+            return updateOwnerAuth(action.ownerId, action.ownerAuth);
         }
         
         case "DELETE_OWNER_AUTH": {
-            return;
+            return deleteOwnerAuth(action.ownerId);
         }
 
         default: {

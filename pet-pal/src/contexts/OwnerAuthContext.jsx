@@ -1,13 +1,15 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import { initialOwnerAuth, ownerAuthReducer } from "../reducers/ownerAuthReducer";
+import { getOwnerAuthList } from "../service/PetPalService";
 
 const OwnerAuthContext = createContext();
 
 export function OwnerAuthProvider({children}) {
     const [ownerAuthState, dispatch] = useReducer(ownerAuthReducer, initialOwnerAuth);
+    const [ownerAuthList, setOwnerAuthList] = useState([]);
 
-    const handleGetOwnerAuths = () => {
-        dispatch({type: "GET_OWNER_AUTHS"});
+    const handleGetOwnerAuthList = () => {
+        setOwnerAuthList(getOwnerAuthList);
     }
 
     const handleGetOwnerAuth = (ownerId) => {
@@ -27,8 +29,9 @@ export function OwnerAuthProvider({children}) {
     }
 
     const contextValue = {
+        ownerAuthList,
         ownerAuthState,
-        handleGetOwnerAuths,
+        handleGetOwnerAuthList,
         handleGetOwnerAuth,
         handleCreateOwnerAuth,
         handleUpdateOwnerAuth,
