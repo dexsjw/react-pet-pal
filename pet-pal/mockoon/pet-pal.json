@@ -159,7 +159,7 @@
       "id": "2t7f",
       "name": "OwnerAuth",
       "documentation": "Pet Pal owner credentials and authentication state",
-      "value": "[\n  {{#repeat 5 10}}\n    {\n      \"ownerId\": \"{{guid}}\",\n      \"username\": \"{{firstName}}\",\n      \"password\": \"{{lorem 1}}\",\n      \"isLoggedIn\": false\n    }\n  {{/repeat}}\n]"
+      "value": "[\n  {{#repeat 5 10}}\n    {\n      \"ownerId\": \"{{guid}}\",\n      \"email\": \"{{email}}\",\n      \"username\": \"{{firstName}}\",\n      \"password\": \"{{lorem 1}}\",\n      \"isLoggedIn\": false\n    }\n  {{/repeat}}\n]"
     },
     {
       "uuid": "04ec82b8-970a-4ece-a082-a4424c429c8b",
