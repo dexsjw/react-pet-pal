@@ -69,6 +69,7 @@ async function ownerProfileViewPet() {
     } finally {
         response = ownerProfiles.map(profile => {
             return {
+                ownerId: profile.ownerId,
                 petName: profile.petName,
                 petGender: profile.petGender,
                 petAge: profile.petAge,
@@ -94,6 +95,7 @@ async function ownerProfileViewPetByOwnerId(ownerId) {
         if (filteredOwnerProfiles.length === 1) {
             response = filteredOwnerProfiles.map(profile => {
                 return {
+                    ownerId: profile.ownerId,
                     petName: profile.petName,
                     petGender: profile.petGender,
                     petAge: profile.petAge,
