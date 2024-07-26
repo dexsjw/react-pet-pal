@@ -30,7 +30,6 @@ export const login = async (credentials) => {
   try {
     const resp = await petPalApi.post(LOGIN_PATH, credentials);
     console.log("API Response: ", resp);
-    console.log("jwtToken", resp.data.payload.jwtToken);
     localStorage.setItem(JWT_TOKEN, resp.data.payload.jwtToken);
     response = resp.data.payload;
     // response = await findOwnerProfileByCredentials(credentials);

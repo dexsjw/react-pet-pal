@@ -4,18 +4,40 @@ import Grid from "@mui/material/Grid";
 import { viewPet } from "../../service/PetPalService";
 import { useEffect, useState } from "react";
 
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+
 const ViewPetPage = () => {
   const [ownersState, setOwnersState] = useState([]);
 
   // petPalMockApi.get("/owner-profile").then((response) => {
   //   setMockData(response.data);
   // });
-  setOwnersState;
+
+  async function getViewPet() {
+    const payload = await viewPet();
+    setOwnersState(payload.owners);
+  }
 
   useEffect(() => {
-    async () => setOwnersState(await viewPet());
-    console.log("ownersState", ownersState);
+    getViewPet();
   }, []);
+
+  if (!ownersState.length > 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress size={"6rem"} />
+      </Box>
+    );
+  }
 
   return (
     <Grid
@@ -35,9 +57,7 @@ const ViewPetPage = () => {
             gender={ownerState.petGender}
             age={ownerState.petAge}
             location={ownerState.areaLocation}
-            imageSrc={
-              "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
-            }
+            imageSrc={ownerState.petPicture[0]}
           />
         </Grid>
       ))}

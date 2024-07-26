@@ -10,21 +10,24 @@ import ErrorPage from "./pages/error/ErrorPage";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Outlet,
   Route,
   RouterProvider,
 } from "react-router-dom";
 import Navbar from "./layout/Navbar";
 import { OwnerProvider } from "./contexts/OwnerContext";
 import PageNotFound from "./pages/error/PageNotFound";
-import LoginRedirect from "./pages/error/LoginRedirect";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<LoginRedirect />}>
+        <Route path="/" element={<Outlet />}>
           <Route
-            path="/login"
+            // path="/login"
+            index
             errorElement={<ErrorPage />}
             element={<LoginPage />}
           />
@@ -45,7 +48,7 @@ function App() {
               element={<ViewPetPage />}
             />
             <Route
-              path="/view-pet/:id"
+              path="/view-pet/:ownerId"
               errorElement={<ErrorPage />}
               element={<ViewPetProfilePage />}
             />
@@ -70,6 +73,7 @@ function App() {
       <OwnerProvider>
         <RouterProvider router={router} />
       </OwnerProvider>
+      <ToastContainer />
     </>
   );
 }
