@@ -1,0 +1,107 @@
+{
+  "uuid": "5d8e6ea4-8f68-440e-b602-1129d348e6bf",
+  "lastMigration": 32,
+  "name": "Pet pal backend",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3002,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "b25e6464-4d04-40de-985e-c3ba5e762023",
+      "type": "crud",
+      "documentation": "Perform CRUD operations on \"Owner\" data bucket",
+      "method": "",
+      "endpoint": "owner",
+      "responses": [
+        {
+          "uuid": "025c3fa2-5018-4587-8370-0f8f9fa36302",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Perform CRUD operations on \"Owner\" data bucket (\"Data\" tab at the top)",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "lkh8",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "ownerId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "b25e6464-4d04-40de-985e-c3ba5e762023"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [
+    {
+      "uuid": "4df12e9c-c324-431d-9cdd-7b88ab2aaa12",
+      "id": "lkh8",
+      "name": "Owner",
+      "documentation": "Pet Pal owner credentials and profile",
+      "value": "[\n  {{#repeat 5 10}}\n    {\n      \"email\": \"{{email}}\",\n      \"password\": \"{{lorem 1}}\",\n      \"jwtToken\": \"{{guid}}\",\n      \"ownerId\": \"{{guid}}\",\n      \"ownerName\": \"{{firstName}} {{lastName}}\",\n      \"ownerMatches\": [],\n      \"areaLocation\": \"{{street}}\",\n      \"petPicture\": [\n        \"https://images.dog.ceo/breeds/collie-border/n02106166_59.jpg\",\n        \"https://images.dog.ceo/breeds/collie-border/n02106166_2543.jpg\"\n      ], \n      \"petName\": \"{{firstName}}\",\n      \"petBreed\": \"{{faker 'animal.dog'}}\",\n      \"petGender\": \"{{faker 'person.sex'}}\",\n      \"petAge\": {{int 1 15}},\n      \"petSize\": \"{{oneOf (array 'Small' 'Medium' 'Large')}}\",\n      \"petDescription\": \"{{lorem 20}}\",\n      \"petIsNeutered\": {{boolean}}\n    }\n  {{/repeat}}\n]"
+    },
+    {
+      "uuid": "343a8e43-544e-42c5-8a75-e26b96e35e26",
+      "id": "uhzy",
+      "name": "ChatRoom",
+      "documentation": "Chat room for Owners to chat with each other",
+      "value": "[\n  {{#each (dataRaw 'lkh8')}}\n    {\n      \"chatRoomId\": \"{{ownerId}}\",\n      \"matchedOwners\": [],\n      \"jwtToken\": \"{{guid}}\"\n    }\n    {{#unless @last}},{{/unless}}\n  {{/each}}\n]"
+    }
+  ],
+  "callbacks": []
+}
