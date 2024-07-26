@@ -1,4 +1,4 @@
-import { editOwnerProfile, getOwnerProfile, login, register } from "../service/PetPalService";
+import { deleteOwnerProfile, editOwnerProfile, getOwnerProfile, login, register } from "../service/PetPalService";
 
 export const initialOwnerState = {
   email: "",
@@ -49,7 +49,16 @@ export const ownerReducer = async (state, action) => {
     
     case "EDIT_OWNER": {
       try {
-        return await editOwnerProfile(action.owner);
+        return await editOwnerProfile(action.jwtToken, action.owner);
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+    
+    case "DELETE_OWNER": {
+      try {
+        return await deleteOwnerProfile(action.jwtTokenPw);
       } catch (error) {
         console.error("Error", error);
       }

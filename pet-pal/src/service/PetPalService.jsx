@@ -10,7 +10,7 @@ const DELETE_PROFILE_PATH ="/api/delete-profile"
 export const register = async (owner) => {
   let response = {};
   try {
-    const resp = await petPalApi.post(REGISTER_PATH, owner);
+    const resp = await petPalApi.post(REGISTER_PATH, {owner});
     console.log("API Response: ", resp)
     response = resp.payload.owner;
   } catch (error) {
@@ -57,10 +57,10 @@ export const getOwnerProfile = async (jwtToken) => {
   return response;
 };
 
-export const editOwnerProfile = async (owner) => {
+export const editOwnerProfile = async (jwtToken, owner) => {
   let response = {};
   try {
-    const resp = await petPalApi.post(EDIT_PROFILE_PATH, owner);
+    const resp = await petPalApi.post(EDIT_PROFILE_PATH, {jwtToken, owner});
     console.log("API Response: ", resp)
     response = resp.payload.owner;
   } catch (error) {
@@ -76,9 +76,8 @@ export const editOwnerProfile = async (owner) => {
 export const deleteOwnerProfile = async (jwtTokenPw) => {
   let response = {};
   try {
-    const resp = await petPalApi.post(DELETE_PROFILE_PATH, jwtTokenPw);
-    console.log("API Response: ", resp)
-    response = resp.status;
+    response = await petPalApi.post(DELETE_PROFILE_PATH, jwtTokenPw);
+    console.log("API Response: ", response)
   } catch (error) {
     console.error(`Error encountered when POST ${DELETE_PROFILE_PATH}`);
     console.error("Error message: ", error.message);

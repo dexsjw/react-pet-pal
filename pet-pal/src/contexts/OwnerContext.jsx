@@ -4,10 +4,7 @@ import { initialOwnerState, ownerReducer } from "../reducers/ownerReducer";
 const OwnerContext = createContext();
 
 export function OwnerProvider({ children }) {
-  const [ownerPromiseState, dispatch] = useReducer(
-    ownerReducer,
-    initialOwnerState
-  );
+  const [ownerPromiseState, dispatch] = useReducer(ownerReducer, initialOwnerState);
   const [ownerState, setOwnerState] = useState(initialOwnerState);
 
   const handleOwnerLogin = async (credentials) => {
@@ -30,8 +27,8 @@ export function OwnerProvider({ children }) {
     }
   };
 
-  const handleCreateOwner = async (owner) => {
-    dispatch({ type: "CREATE_OWNER", owner });
+  const handleCreateOwner = async (jwtToken, owner) => {
+    dispatch({ type: "CREATE_OWNER", jwtToken, owner });
     try {
       setOwnerState(await ownerPromiseState);
       console.log(ownerState);
@@ -50,6 +47,16 @@ export function OwnerProvider({ children }) {
     }
   };
 
+  const handleDeleteOwner = async (jwtTokenPw) => {
+    dispatch({ type: "DELETE_OWNER", jwtTokenPw });
+    try {
+      setOwnerState(await ownerPromiseState);
+      console.log(ownerState);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
   const contextValue = {
     ownerPromiseState,
     ownerState,
@@ -57,6 +64,7 @@ export function OwnerProvider({ children }) {
     handleGetOwnerJwt,
     handleCreateOwner,
     handleEditOwner,
+    handleDeleteOwner
   };
 
   return (
