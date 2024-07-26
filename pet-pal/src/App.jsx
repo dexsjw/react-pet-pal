@@ -17,15 +17,17 @@ import {
 import Navbar from "./layout/Navbar";
 import { OwnerProvider } from "./contexts/OwnerContext";
 import PageNotFound from "./pages/error/PageNotFound";
-// import LoginRedirect from "./pages/error/LoginRedirect";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/" element={<Outlet />}>
-          <Route 
-            path="/login"
+          <Route
+            // path="/login"
+            index
             errorElement={<ErrorPage />}
             element={<LoginPage />}
           />
@@ -34,12 +36,7 @@ function App() {
             errorElement={<ErrorPage />}
             element={<RegisterPage />}
           />
-          <Route element={
-            <>
-              {/* <LoginRedirect /> */}
-              <Navbar />
-            </>
-          }>
+          <Route element={<Navbar />}>
             <Route
               path="/profile/:id"
               errorElement={<ErrorPage />}
@@ -76,6 +73,7 @@ function App() {
       <OwnerProvider>
         <RouterProvider router={router} />
       </OwnerProvider>
+      <ToastContainer />
     </>
   );
 }

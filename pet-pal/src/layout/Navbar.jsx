@@ -1,9 +1,9 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import "./NavBar.module.css";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 import { Avatar, Box, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
 import useOwnerContext from "../contexts/useOwnerContext";
 import { useEffect } from "react";
 import { getOwnerProfile } from "../service/PetPalService";
+import { JWT_TOKEN } from "../service/PetPalService";
 
 const navLinkProps = [
   {text: "View Pets", path: "/view-pet", needOwnerId: false}, 
@@ -13,18 +13,24 @@ const navLinkProps = [
 ]
 
 const Navbar = () => {
+  useEffect(() => {
+    setOwnerState(retrieveOwnerProfile());
+  }, [])
+
   const {setOwnerState} = useOwnerContext();
 
+  // Redirect to login if not logged in
+  const location = useLocation();
+  const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false;
+  if (!isLoggedIn) {
+    return <Navigate to="/" state={{ from: location }} />;
+  }
   // const navigate = useNavigate();
 
   async function retrieveOwnerProfile() {
     const payload = await getOwnerProfile();
     return payload.owner;
   }
-
-  useEffect(() => {
-    setOwnerState(retrieveOwnerProfile());
-  }, [])
 
   return (
     <>
