@@ -1,7 +1,6 @@
 import { createContext, useReducer, useState } from "react";
 import { initialOwnerState, ownerReducer } from "../reducers/ownerReducer";
 
-
 const OwnerContext = createContext();
 
 export function OwnerProvider({ children }) {
