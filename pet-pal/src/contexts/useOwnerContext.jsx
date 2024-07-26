@@ -8,4 +8,3 @@ const useOwnerContext = () => {
 export default useOwnerContext;
 
 
-//export const useOwnerContext = () => useContext(OwnerContext);

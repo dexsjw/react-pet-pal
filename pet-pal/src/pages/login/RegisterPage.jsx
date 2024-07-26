@@ -1,8 +1,8 @@
-// src/pages/register/Register.jsx
+// src/pages/register/RegisterPage.jsx
 import React, { useState } from 'react';
 import { Container, TextField, Button, Typography, Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Select } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { editOwnerProfile } from '../../service/PetPalService'; // Import your API function
+import { register } from '../../service/PetPalService';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -40,21 +40,23 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await editOwnerProfile(formData);
-    if (response.success) {
-      alert('Profile registered successfully');
-      navigate('/');
-    } else {
-      alert('Error registering profile');
+    try {
+      const response = await register(formData);
+      if (response) {
+        alert('Registration successful!');
+        navigate('/login');
+      } else {
+        alert('Registration failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('An error occurred during registration.');
     }
   };
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Register
-      </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
         <Box sx={{ width: '300px', height: '300px', border: '1px solid #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {photoPreview ? <img src={photoPreview} alt="Pet" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Typography variant="body1">Pet Photo</Typography>}
         </Box>
@@ -62,7 +64,7 @@ function Register() {
           <Button
             variant="contained"
             component="label"
-            sx={{ mb: 2 }}
+            sx={{ width: '260px', mb: 2 }}
           >
             Upload Pet Photo
             <input
@@ -71,10 +73,13 @@ function Register() {
               onChange={handleFileChange}
             />
           </Button>
-          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={{ mb: 2 }}>
+          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={{ width: '260px', mb: 2 }}>
             Register
           </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={{ mb: 2 }}>
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/view-pet')} sx={{ width: '260px', mb: 2 }}>
+            View Pet
+          </Button>
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={{ width: '260px', mb: 2 }}>
             Cancel
           </Button>
         </Box>
@@ -176,12 +181,6 @@ function Register() {
           value={formData.password}
           onChange={handleChange}
         />
-        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-          Register
-        </Button>
-        <Button fullWidth variant="outlined" color="secondary" onClick={() => navigate('/')}>
-          Cancel
-        </Button>
       </Box>
     </Container>
   );
