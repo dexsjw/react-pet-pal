@@ -1,11 +1,143 @@
 import petPalApi from "./api/PetPalApi";
 
+export const JWT_TOKEN = "jwtToken";
 const REGISTER_PATH = "/api/register";
 const LOGIN_PATH = "/api/login";
 const OWNER_PROFILE_PATH = "/api/owner-profile";
 const EDIT_PROFILE_PATH = "/api/edit-profile";
 const VIEW_PET_PATH = "/api/view-pet";
+const DELETE_PROFILE_PATH ="/api/delete-profile"
 
+export const register = async (owner) => {
+  let response = {};
+  try {
+    const resp = await petPalApi.post(REGISTER_PATH, {owner});
+    console.log("API Response: ", resp);
+    localStorage.setItem(JWT_TOKEN, resp.data.payload.jwtToken);
+    response = resp.data.payload;
+  } catch (error) {
+    console.error(`Error encountered when POST ${REGISTER_PATH}`);
+    console.error("owner: ", owner);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+export const login = async (credentials) => {
+  let response = {};
+  try {
+    const resp = await petPalApi.post(LOGIN_PATH, credentials);
+    console.log("API Response: ", resp);
+    console.log("jwtToken", resp.data.payload.jwtToken);
+    localStorage.setItem(JWT_TOKEN, resp.data.payload.jwtToken);
+    response = resp.data.payload;
+    // response = await findOwnerProfileByCredentials(credentials);
+  } catch (error) {
+    console.error(`Error encountered when POST ${LOGIN_PATH}`);
+    console.error("credentials: ", credentials);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+export const getOwnerProfile = async () => {
+  let response = {};
+  let jwtToken = "";
+  if (localStorage.getItem(JWT_TOKEN)) {
+      jwtToken = localStorage.getItem(JWT_TOKEN)
+  }
+  try {
+    const resp = await petPalApi.post(OWNER_PROFILE_PATH, jwtToken);
+    console.log("API Response: ", resp);
+    response = resp.data.payload;
+    // response = await findOwnerProfileByJwtToken(jwtToken);
+  } catch (error) {
+    console.error(`Error encountered when POST ${OWNER_PROFILE_PATH}`);
+    console.error("jwtToken: ", jwtToken);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+export const editOwnerProfile = async (owner) => {
+  let response = {};
+  let jwtToken = "";
+  if (localStorage.getItem(JWT_TOKEN)) {
+      jwtToken = localStorage.getItem(JWT_TOKEN)
+  }
+  try {
+    const resp = await petPalApi.post(EDIT_PROFILE_PATH, {jwtToken, owner});
+    console.log("API Response: ", resp);
+    response = resp.data.payload;
+  } catch (error) {
+    console.error(`Error encountered when POST ${EDIT_PROFILE_PATH}`);
+    console.error("owner: ", owner);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+export const deleteOwnerProfile = async (password) => {
+  let response = {};
+  let jwtToken = "";
+  if (localStorage.getItem(JWT_TOKEN)) {
+      jwtToken = localStorage.getItem(JWT_TOKEN)
+  }
+  const jwtTokenPw = {password, jwtToken}
+  try {
+    response = await petPalApi.post(DELETE_PROFILE_PATH, jwtTokenPw);
+    console.log("API Response: ", response);
+  } catch (error) {
+    console.error(`Error encountered when POST ${DELETE_PROFILE_PATH}`);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+export const viewPet = async () => {
+  let response = {};
+  try {
+    const resp = await petPalApi.get(VIEW_PET_PATH);
+    console.log("API Response: ", resp);
+    response = resp.data.payload;
+    // response = ownerProfileViewPet();
+    console.log(response);
+  } catch (error) {
+    console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+export const viewPetByOwnerId = async (ownerId) => {
+  let response = {};
+  try {
+    const resp = await petPalApi.get(VIEW_PET_PATH + `/${ownerId}`);
+    console.log("API Response: ", resp);
+    response = resp.data.payload;
+    // response = ownerProfileViewPetByOwnerId(ownerId);
+  } catch (error) {
+    console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
+    console.error("Error message: ", error.message);
+    console.error("Error: ", error.response.data.status);
+    response = {};
+  }
+  return response;
+};
+
+// For Mockoon Usage
 // const REGISTER_PATH = "/owner";
 // const LOGIN_PATH = "/owner";
 // const OWNER_PROFILE_PATH = "/owner";
@@ -123,100 +255,3 @@ const VIEW_PET_PATH = "/api/view-pet";
 //   }
 //   return response;
 // }
-
-export const register = async (owner) => {
-  let response = {};
-  try {
-    response = await petPalApi.post(REGISTER_PATH, owner);
-  } catch (error) {
-    console.error(`Error encountered when POST ${REGISTER_PATH}`);
-    console.error("owner: ", owner);
-    console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
-  }
-  return response;
-};
-
-export const login = async (credentials) => {
-  let response = {};
-  try {
-    response = await petPalApi.post(LOGIN_PATH, credentials);
-    // response = await findOwnerProfileByCredentials(credentials);
-  } catch (error) {
-    console.error(`Error encountered when POST ${LOGIN_PATH}`);
-    console.error("credentials: ", credentials);
-    console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
-  }
-  return response;
-};
-
-export const getOwnerProfile = async (jwtToken) => {
-  let response = {};
-  try {
-    response = await petPalApi.post(OWNER_PROFILE_PATH, jwtToken);
-    // response = await findOwnerProfileByJwtToken(jwtToken);
-  } catch (error) {
-    console.error(`Error encountered when POST ${OWNER_PROFILE_PATH}`);
-    console.error("jwtToken: ", jwtToken);
-    console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
-  }
-  return response;
-};
-
-export const editOwnerProfile = async (owner) => {
-  let response = {};
-  try {
-    response = await petPalApi.post(EDIT_PROFILE_PATH, owner);
-  } catch (error) {
-    console.error(`Error encountered when POST ${EDIT_PROFILE_PATH}`);
-    console.error("owner: ", owner);
-    console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
-  }
-  return response;
-};
-
-export const deleteOwnerProfile = async (email) => {
-  try {
-    const response = await petPalApi.delete(`/profile/${email}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error encountered when deleting profile:', error);
-    return { success: false, message: error.message };
-  }
-};
-
-export const viewPet = async () => {
-  let response = [];
-  try {
-    response = await petPalApi.get(VIEW_PET_PATH);
-    // response = ownerProfileViewPet();
-    console.log(response);
-  } catch (error) {
-    console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
-    console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = [];
-  }
-  return response;
-};
-
-export const viewPetByOwnerId = async (ownerId) => {
-  let response = {};
-  try {
-    response = await petPalApi.get(VIEW_PET_PATH + `/${ownerId}`);
-    // response = ownerProfileViewPetByOwnerId(ownerId);
-  } catch (error) {
-    console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
-    console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
-  }
-  return response;
-};
