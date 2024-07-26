@@ -38,7 +38,7 @@ function App() {
           />
           <Route element={<Navbar />}>
             <Route
-              path="/profile/:id"
+              path="/profile"
               errorElement={<ErrorPage />}
               element={<OwnerProfilePage />}
             />

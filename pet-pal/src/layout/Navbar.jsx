@@ -1,4 +1,4 @@
-import { Outlet, useLocation, Navigate } from "react-router-dom";
+import { Outlet, useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Avatar, Box, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
 import useOwnerContext from "../contexts/useOwnerContext";
 import { useEffect } from "react";
@@ -6,10 +6,10 @@ import { getOwnerProfile } from "../service/PetPalService";
 import { JWT_TOKEN } from "../service/PetPalService";
 
 const navLinkProps = [
-  {text: "View Pets", path: "/view-pet", needOwnerId: false}, 
-  {text: "My Profile", path: "/profile", needOwnerId: true},
-  {text: "Chat", path: "/chat", needOwnerId: false}, 
-  {text: "Logout", path: "/login", needOwnerId: false},
+  {text: "View Pets", path: "/view-pet"}, 
+  {text: "My Profile", path: "/profile"},
+  {text: "Chat", path: "/chat"}, 
+  {text: "Logout", path: "/login"},
 ]
 
 const Navbar = () => {
@@ -18,8 +18,7 @@ const Navbar = () => {
   }, [])
 
   const { setOwnerState} = useOwnerContext();
-  // const { ownerState, setOwnerState} = useOwnerContext();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Redirect to login if not logged in
   const location = useLocation();
@@ -73,10 +72,7 @@ const Navbar = () => {
             <ListItem >
               <ListItemButton 
                 key={index}
-                // onClick={navLinkProp.needOwnerId 
-                //   ? navigate(`${navLinkProp.path}/${ownerState.ownerId}`)
-                //   : navigate(navLinkProp.path)
-                // }
+                onClick={() => navigate(navLinkProp.path)}
               >
                 <ListItemText 
                   primary={navLinkProp.text}
