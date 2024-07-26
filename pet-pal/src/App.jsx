@@ -10,20 +10,21 @@ import ErrorPage from "./pages/error/ErrorPage";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Outlet,
   Route,
   RouterProvider,
 } from "react-router-dom";
 import Navbar from "./layout/Navbar";
 import { OwnerProvider } from "./contexts/OwnerContext";
 import PageNotFound from "./pages/error/PageNotFound";
-import LoginRedirect from "./pages/error/LoginRedirect";
+// import LoginRedirect from "./pages/error/LoginRedirect";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<LoginRedirect />}>
-          <Route
+        <Route path="/" element={<Outlet />}>
+          <Route 
             path="/login"
             errorElement={<ErrorPage />}
             element={<LoginPage />}
@@ -33,7 +34,12 @@ function App() {
             errorElement={<ErrorPage />}
             element={<RegisterPage />}
           />
-          <Route element={<Navbar />}>
+          <Route element={
+            <>
+              {/* <LoginRedirect /> */}
+              <Navbar />
+            </>
+          }>
             <Route
               path="/profile/:id"
               errorElement={<ErrorPage />}

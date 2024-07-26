@@ -60,6 +60,7 @@ export function OwnerProvider({ children }) {
   const contextValue = {
     ownerPromiseState,
     ownerState,
+    setOwnerState,
     handleOwnerLogin,
     handleGetOwnerJwt,
     handleCreateOwner,
