@@ -17,7 +17,7 @@ import {
 import Navbar from "./layout/Navbar";
 import { OwnerProvider } from "./contexts/OwnerContext";
 import PageNotFound from "./pages/error/PageNotFound";
-import LoginRedirect from "./pages/error/LoginRedirect";
+// import LoginRedirect from "./pages/error/LoginRedirect";
 
 function App() {
   const router = createBrowserRouter(
@@ -25,7 +25,6 @@ function App() {
       <>
         <Route path="/" element={<Outlet />}>
           <Route 
-            index
             path="/login"
             errorElement={<ErrorPage />}
             element={<LoginPage />}
@@ -36,9 +35,10 @@ function App() {
             element={<RegisterPage />}
           />
           <Route element={
-            <LoginRedirect>
+            <>
+              {/* <LoginRedirect /> */}
               <Navbar />
-            </LoginRedirect>
+            </>
           }>
             <Route
               path="/profile/:id"
