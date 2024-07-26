@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useOwnerContext from "../../contexts/useOwnerContext";
+import { JWT_TOKEN } from "../../service/PetPalService";
 
 function LoginPage() {
-  const { ownerState, handleOwnerLogin } = useOwnerContext();
+  const { handleOwnerLogin } = useOwnerContext();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -25,12 +26,16 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    handleOwnerLogin(credentials);
-    if (ownerState.jwtToken) {
-      // localStorage.setItem("jwtToken": ownerState.jwtToken);
-      navigate("/view-pet");
-    } else {
-      alert("Wrong credentials provided!");
+    try {
+      await handleOwnerLogin(credentials);
+    } catch (error) {
+      console.log("Error: ", error);
+    } finally {
+      if (localStorage.getItem(JWT_TOKEN)) {
+        navigate("/view-pet");
+      } else {
+        alert("Wrong credentials provided!");
+      }
     }
   };
 
