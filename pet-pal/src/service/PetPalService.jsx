@@ -16,7 +16,8 @@ async function findOwnerProfileByCredentials(credentials) {
     let response = {};
     let ownerProfiles = [];
     try {
-        ownerProfiles = await petPalApi.get(LOGIN_PATH);
+        const resp = await petPalApi.get(LOGIN_PATH);
+        ownerProfiles = resp.data;
     } catch (error) {
         console.error(`Error encountered when GET ${LOGIN_PATH}`);
         console.error("Error message: ", error.message);
@@ -39,7 +40,8 @@ async function findOwnerProfileByJwtToken(jwtToken) {
     let response = {};
     let ownerProfiles = [];
     try {
-        ownerProfiles = await petPalApi.get(OWNER_PROFILE_PATH);
+        const resp = await petPalApi.get(OWNER_PROFILE_PATH);
+        ownerProfiles = resp.data;
     } catch (error) {
         console.error(`Error encountered when GET ${OWNER_PROFILE_PATH}`);
         console.error("Error message: ", error.message);
@@ -61,7 +63,8 @@ async function ownerProfileViewPet() {
     let response = [];
     let ownerProfiles = [];
     try {
-        ownerProfiles = await petPalApi.get(VIEW_PET_PATH);
+        const resp = await petPalApi.get(VIEW_PET_PATH);
+        ownerProfiles = resp.data;
     } catch (error) {
         console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
         console.error("Error message: ", error.message);
@@ -85,7 +88,8 @@ async function ownerProfileViewPetByOwnerId(ownerId) {
     let response = {};
     let ownerProfiles = [];
     try {
-        ownerProfiles = await petPalApi.get(OWNER_PROFILE_PATH);
+        const resp = await petPalApi.get(OWNER_PROFILE_PATH);
+        ownerProfiles = resp.data;
     } catch (error) {
         console.error(`Error encountered when GET ${OWNER_PROFILE_PATH}`);
         console.error("Error message: ", error.message);
@@ -121,6 +125,7 @@ export const register = async (owner) => {
         console.error(`Error encountered when POST ${REGISTER_PATH}`);
         console.error("owner: ", owner);
         console.error("Error message: ", error.message);
+        console.error("Error: ", error.response.data.status);
         response = {};
     }
     return response;
@@ -135,6 +140,7 @@ export const login = async (credentials) => {
         console.error(`Error encountered when POST ${LOGIN_PATH}`);
         console.error("credentials: ", credentials);
         console.error("Error message: ", error.message);
+        console.error("Error: ", error.response.data.status);
         response = {};
     }
     return response;
@@ -149,6 +155,7 @@ export const getOwnerProfile = async (jwtToken) => {
         console.error(`Error encountered when POST ${OWNER_PROFILE_PATH}`);
         console.error("jwtToken: ", jwtToken);
         console.error("Error message: ", error.message);
+        console.error("Error: ", error.response.data.status);
         response = {};
     }
     return response;
@@ -162,6 +169,7 @@ export const editOwnerProfile = async (owner) => {
         console.error(`Error encountered when POST ${EDIT_PROFILE_PATH}`);
         console.error("owner: ", owner);
         console.error("Error message: ", error.message);
+        console.error("Error: ", error.response.data.status);
         response = {};
     }
     return response;
@@ -175,6 +183,7 @@ export const viewPet = async () => {
     } catch (error) {
         console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
         console.error("Error message: ", error.message);
+        console.error("Error: ", error.response.data.status);
         response = [];
     }
     return response;
@@ -188,6 +197,7 @@ export const viewPetByOwnerId = async (ownerId) => {
     } catch (error) {
         console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
         console.error("Error message: ", error.message);
+        console.error("Error: ", error.response.data.status);
         response = {};
     }
     return response;
