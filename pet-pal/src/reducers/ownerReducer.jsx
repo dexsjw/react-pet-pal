@@ -1,4 +1,4 @@
-import { editOwnerProfile, getOwnerProfile, login, register } from "../service/PetPalService";
+import { deleteOwnerProfile, editOwnerProfile, getOwnerProfile, login, register } from "../service/PetPalService";
 
 export const initialOwnerState = {
   email: "",
@@ -20,9 +20,20 @@ export const initialOwnerState = {
 
 export const ownerReducer = async (state, action) => {
   switch (action.type) {
+    case "CREATE_OWNER": {
+      try {
+        const payload = await register(action.owner);
+        return payload.owner;
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+
     case "OWNER_LOGIN": {
       try {
-        return await login(action.credentials);
+        const payload = await login(action.credentials);
+        return payload.owner;
       } catch (error) {
         console.error("Error", error);
       }
@@ -31,16 +42,8 @@ export const ownerReducer = async (state, action) => {
 
     case "GET_OWNER_JWT": {
       try {
-        return await getOwnerProfile(action.jwtToken);
-      } catch (error) {
-        console.error("Error", error);
-      }
-      break;
-    }
-
-    case "CREATE_OWNER": {
-      try {
-        return await register(action.owner);
+        const payload = await getOwnerProfile();
+        return payload.owner;
       } catch (error) {
         console.error("Error", error);
       }
@@ -49,7 +52,17 @@ export const ownerReducer = async (state, action) => {
     
     case "EDIT_OWNER": {
       try {
-        return await editOwnerProfile(action.owner);
+        const payload = await editOwnerProfile(action.owner);
+        return payload.owner;
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+    
+    case "DELETE_OWNER": {
+      try {
+        return await deleteOwnerProfile(action.password);
       } catch (error) {
         console.error("Error", error);
       }
