@@ -111,7 +111,6 @@ export const viewPet = async () => {
     console.log("API Response: ", resp);
     response = resp.data.payload;
     // response = ownerProfileViewPet();
-    console.log(response);
   } catch (error) {
     console.error(`Error encountered when GET ${VIEW_PET_PATH}`);
     console.error("Error message: ", error.message);
