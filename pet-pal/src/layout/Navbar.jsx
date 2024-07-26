@@ -9,7 +9,7 @@ const navLinkProps = [
   {text: "View Pets", path: "/view-pet"}, 
   {text: "My Profile", path: "/profile"},
   {text: "Chat", path: "/chat"}, 
-  {text: "Logout", path: "/login"},
+  {text: "Logout", path: "/"},
 ]
 
 const Navbar = () => {
