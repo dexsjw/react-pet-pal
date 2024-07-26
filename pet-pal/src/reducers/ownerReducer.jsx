@@ -3,7 +3,7 @@ import { deleteOwnerProfile, editOwnerProfile, getOwnerProfile, login, register 
 export const initialOwnerState = {
   email: "",
   password: "",
-  isLoggedIn: false,
+  //isLoggedIn: false,
   ownerId: "",
   ownerName: "",
   ownerMatches: [],
