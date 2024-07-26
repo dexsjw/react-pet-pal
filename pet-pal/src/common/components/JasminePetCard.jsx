@@ -13,25 +13,36 @@ import { CardActionArea } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const JasminePetCard = (props) => {
+  let width = 500;
+  let imageWidth = "345";
+
+  let isViewPetProfile = Boolean(props.description);
+
+  if (isViewPetProfile) {
+    width = "720";
+    imageWidth = "600";
+  }
 
   const navigate = useNavigate();
-
   return (
-    <Card sx={{ width: 500 }}>
+    <Card sx={{ width }}>
       <CardActionArea
         onClick={() => {
-          navigate(`/view-pet/${props.id}`);
           // if (document.location.href.endsWith("/")) {
           //   document.location.href = document.location.href + props.id;
           // } else {
           //   document.location.href = document.location.href + "/" + props.id;
           // }
+          if (!isViewPetProfile) {
+            navigate(`/view-pet/${props.id}`);
+          }
         }}
       >
         <CardMedia
           component="img"
           alt="picture of pet"
-          height="345"
+          weight={imageWidth}
+          height={imageWidth}
           image={props.imageSrc}
         />
         <CardContent>
@@ -51,6 +62,11 @@ const JasminePetCard = (props) => {
             <FmdGoodOutlined></FmdGoodOutlined>
             <Typography>{props.location}</Typography>
           </Box>
+          {props.description ? (
+            <Typography mt={1}>{props.description}</Typography>
+          ) : (
+            <></>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>
