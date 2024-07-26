@@ -30,7 +30,6 @@ export const login = async (credentials) => {
   try {
     const resp = await petPalApi.post(LOGIN_PATH, credentials);
     console.log("API Response: ", resp);
-    console.log("jwtToken", resp.data.payload.jwtToken);
     localStorage.setItem(JWT_TOKEN, resp.data.payload.jwtToken);
     response = resp.data.payload;
     // response = await findOwnerProfileByCredentials(credentials);
@@ -51,7 +50,7 @@ export const getOwnerProfile = async () => {
       jwtToken = localStorage.getItem(JWT_TOKEN)
   }
   try {
-    const resp = await petPalApi.post(OWNER_PROFILE_PATH, jwtToken);
+    const resp = await petPalApi.post(OWNER_PROFILE_PATH, {jwtToken});
     console.log("API Response: ", resp);
     response = resp.data.payload;
     // response = await findOwnerProfileByJwtToken(jwtToken);
