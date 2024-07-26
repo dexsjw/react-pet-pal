@@ -1,63 +1,36 @@
-import PetCard from "../../components/PetCard";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import PetCard from "../../common/components/JasminePetCard";
 import Grid from "@mui/material/Grid";
+import petPalMockApi from "../../service/api/PetPalApi";
+import { useState } from "react";
 
 const ViewPetPage = () => {
-  const mockData = [
-    {
-      areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-      petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
-      petName: "Winnie", // string
-      petGender: "Male?", // male / female,
-      petAge: 8, // number
-    },
-    {
-      areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-      petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
-      petName: "Winnie", // string
-      petGender: "Male?", // male / female,
-      petAge: 8, // number
-    },
-    {
-      areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-      petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
-      petName: "Winnie", // string
-      petGender: "Male?", // male / female,
-      petAge: 8, // number
-    },
-    {
-      areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-      petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
-      petName: "Winnie", // string
-      petGender: "Male?", // male / female,
-      petAge: 8, // number
-    },
-    {
-      areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-      petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
-      petName: "Winnie", // string
-      petGender: "Male?", // male / female,
-      petAge: 8, // number
-    },
-    {
-      areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-      petPicture: "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", // url string (generate random url string -> own photo if have time)
-      petName: "Winnie", // string
-      petGender: "Male?", // male / female,
-      petAge: 8, // number
-    },
-  ];
+  const [mockData, setMockData] = useState([]);
+
+  petPalMockApi.get("/owner-profile").then((response) => {
+    setMockData(response.data);
+  });
+
   return (
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+    <Grid
+      container
+      rowSpacing={10}
+      columnSpacing={{ xs: 10, sm: 10, md: 10 }}
+      columns={2}
+      padding={8}
+      justifyContent="center"
+      alignItems="center"
+    >
       {mockData.map((data) => (
-        <Grid item xs={6}>
+        <Grid item key={data.id}>
           <PetCard
+            id={data.ownerId}
             name={data.petName}
             gender={data.petGender}
             age={data.petAge}
             location={data.areaLocation}
-            imageSrc={data.petPicture}
+            imageSrc={
+              "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg"
+            }
           />
         </Grid>
       ))}
