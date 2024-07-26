@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { CardActionArea } from "@mui/material";
 
-const PetCard = (props) => {
+const JasminePetCard = (props) => {
   return (
     <Card sx={{ width: 500 }}>
       <CardActionArea
@@ -52,4 +52,4 @@ const PetCard = (props) => {
   );
 };
 
-export default PetCard;
+export default JasminePetCard;
