@@ -1,27 +1,61 @@
-// src/contexts/ownerReducer.jsx
-export const initialState = {
-  users: JSON.parse(localStorage.getItem('users')) || []
+import { editOwnerProfile, getOwnerProfile, login, register } from "../service/PetPalService";
+
+export const initialOwnerState = {
+  email: "",
+  password: "",
+  isLoggedIn: false,
+  ownerId: "",
+  ownerName: "",
+  ownerMatches: [],
+  areaLocation: "",
+  petPicture: [], 
+  petName: "",
+  petBreed: "",
+  petGender: "",
+  petAge: 0,
+  petSize: "",
+  petDescription: "",
+  petIsNeutered: false
 };
 
-export const ownerReducer = (state, action) => {
+export const ownerReducer = async (state, action) => {
   switch (action.type) {
-    case 'ADD_USER':
-      return {
-        ...state,
-        users: [...state.users, action.payload]
-      };
-    case 'UPDATE_USER':
-      return {
-        ...state,
-        users: state.users.map(user =>
-          user.email === action.payload.email ? action.payload : user
-        )
-      };
-    case 'DELETE_USER':
-      return {
-        ...state,
-        users: state.users.filter(user => user.email !== action.payload)
-      };
+    case "OWNER_LOGIN": {
+      try {
+        return await login(action.credentials);
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+
+    case "GET_OWNER_JWT": {
+      try {
+        return await getOwnerProfile(action.jwtToken);
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+
+    case "CREATE_OWNER": {
+      try {
+        return await register(action.owner);
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+    
+    case "EDIT_OWNER": {
+      try {
+        return await editOwnerProfile(action.owner);
+      } catch (error) {
+        console.error("Error", error);
+      }
+      break;
+    }
+    
     default:
       return state;
   }
