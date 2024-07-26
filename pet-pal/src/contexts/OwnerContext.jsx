@@ -7,6 +7,16 @@ export function OwnerProvider({ children }) {
   const [ownerPromiseState, dispatch] = useReducer(ownerReducer, initialOwnerState);
   const [ownerState, setOwnerState] = useState(initialOwnerState);
 
+  const handleCreateOwner = async (owner) => {
+    dispatch({ type: "CREATE_OWNER", owner });
+    try {
+      setOwnerState(await ownerPromiseState);
+      console.log(ownerState);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
   const handleOwnerLogin = async (credentials) => {
     dispatch({ type: "OWNER_LOGIN", credentials });
     try {
@@ -17,18 +27,8 @@ export function OwnerProvider({ children }) {
     }
   };
 
-  const handleGetOwnerJwt = async (jwtToken) => {
-    dispatch({ type: "GET_OWNER_JWT", jwtToken });
-    try {
-      setOwnerState(await ownerPromiseState);
-      console.log(ownerState);
-    } catch (error) {
-      console.log("Error: ", error);
-    }
-  };
-
-  const handleCreateOwner = async (jwtToken, owner) => {
-    dispatch({ type: "CREATE_OWNER", jwtToken, owner });
+  const handleGetOwnerJwt = async () => {
+    dispatch({ type: "GET_OWNER_JWT" });
     try {
       setOwnerState(await ownerPromiseState);
       console.log(ownerState);
@@ -47,8 +47,8 @@ export function OwnerProvider({ children }) {
     }
   };
 
-  const handleDeleteOwner = async (jwtTokenPw) => {
-    dispatch({ type: "DELETE_OWNER", jwtTokenPw });
+  const handleDeleteOwner = async (password) => {
+    dispatch({ type: "DELETE_OWNER", password });
     try {
       setOwnerState(await ownerPromiseState);
       console.log(ownerState);
