@@ -1,11 +1,10 @@
-// src/pages/login/Register.jsx
-import React, { useContext, useState } from 'react';
+// src/pages/register/RegisterPage.jsx
+import React, { useState } from 'react';
 import { Container, TextField, Button, Typography, Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Select } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import OwnerContext from '../../contexts/OwnerContext';
+import { register } from '../../service/PetPalService';
 
-function RegisterPage() {
-  const { state, dispatch } = useContext(OwnerContext);
+function Register() {
   const [formData, setFormData] = useState({
     petName: '',
     location: '',
@@ -39,20 +38,19 @@ function RegisterPage() {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Attempt to save data and catch storage quota errors
     try {
-      dispatch({ type: 'ADD_USER', payload: formData });
-      const updatedUsers = [...state.users, formData];
-      localStorage.setItem('users', JSON.stringify(updatedUsers));
-      alert('User registered successfully');
-      console.log(localStorage);
-      navigate('/');
+      const response = await register(formData);
+      if (response) {
+        alert('Registration successful!');
+        navigate('/login');
+      } else {
+        alert('Registration failed. Please try again.');
+      }
     } catch (error) {
-      alert('Failed to register user. Storage quota exceeded.');
-      console.error('Storage error:', error);
+      console.error('Error during registration:', error);
+      alert('An error occurred during registration.');
     }
   };
 
@@ -77,6 +75,9 @@ function RegisterPage() {
           </Button>
           <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={{ width: '260px', mb: 2 }}>
             Register
+          </Button>
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/view-pet')} sx={{ width: '260px', mb: 2 }}>
+            View Pet
           </Button>
           <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={{ width: '260px', mb: 2 }}>
             Cancel
@@ -185,4 +186,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default Register;

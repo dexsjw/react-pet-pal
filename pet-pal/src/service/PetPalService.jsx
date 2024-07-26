@@ -49,6 +49,7 @@ export const getOwnerProfile = async () => {
   if (localStorage.getItem(JWT_TOKEN)) {
       jwtToken = localStorage.getItem(JWT_TOKEN)
   }
+  
   try {
     const resp = await petPalApi.post(OWNER_PROFILE_PATH, {jwtToken});
     console.log("API Response: ", resp);

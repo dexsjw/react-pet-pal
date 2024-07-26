@@ -1,155 +1,127 @@
 // src/pages/owner-profile/OwnerProfile.jsx
-import React, { useState, useEffect } from "react";
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  MenuItem,
-  Select,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import useOwnerContext from "../../contexts/useOwnerContext";
+import React, { useState, useEffect } from 'react';
+import { Container, TextField, Button, Typography, Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Select } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import  useOwnerContext  from '../../contexts/useOwnerContext';
+import { getOwnerProfile, editOwnerProfile, deleteOwnerProfile } from '../../service/PetPalService';
 
-function OwnerProfile() {
-  const { state, dispatch } = useOwnerContext();
+function OwnerProfilePage() {
+  const { ownerState, setOwnerState } = useOwnerContext();
   const [formData, setFormData] = useState({
-    petName: "",
-    location: "",
-    gender: "",
-    breed: "",
-    age: "",
-    size: "",
-    neutered: "",
-    description: "",
-    ownerName: "",
-    email: "",
-    password: "",
-    petPhoto: "",
+    petName: ownerState.petName,
+    areaLocation: ownerState.areaLocation,
+    petGender: ownerState.petGender,
+    petBreed: ownerState.petBreed,
+    petAge: ownerState.petAge,
+    petSize: ownerState.petSize,
+    petIsNeutered: ownerState.petIsNeutered,
+    petDescription: ownerState.petDescription,
+    ownerName: ownerState.ownerName,
+    email: ownerState.email,
+    password: '',
+    petPicture: ownerState.petPicture
   });
 
   const [photoPreview, setPhotoPreview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedInUserEmail = localStorage.getItem("loggedInUser");
-    const userData = state.users.find(
-      (user) => user.email === loggedInUserEmail
-    );
-    if (userData) {
-      setFormData(userData);
-      setPhotoPreview(userData.petPhoto);
-    }
-  }, [state.users]);
+    const fetchOwnerProfile = async () => {
+      try {
+        
+        const profile = await getOwnerProfile();
+        console.dir(profile.owner);
+        setFormData({petName: profile.owner.petName,
+            areaLocation: profile.owner.areaLocation,
+            petGender: profile.owner.petGender,
+            petBreed: profile.owner.petBreed,
+            petAge: profile.owner.petAge,
+            petSize: profile.owner.petSize,
+            petIsNeutered: profile.owner.petIsNeutered,
+            petDescription: profile.owner.petDescription,
+            ownerName: profile.owner.ownerName,
+            email: profile.owner.email,
+            password: profile.owner.password,
+            petPicture: profile.owner.petPicture});
+        setPhotoPreview(profile.owner.petPicture);
+      } catch (error) {
+        console.error('Error fetching owner profile:', error);
+      }
+    };
+
+    fetchOwnerProfile();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    setFormData(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setFormData((prevState) => ({ ...prevState, petPhoto: reader.result }));
+      setFormData(prevState => ({ ...prevState, petPicture: reader.result }));
       setPhotoPreview(reader.result);
     };
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedUsers = state.users.map((user) =>
-      user.email === formData.email ? formData : user
-    );
-    dispatch({ type: "UPDATE_USER", payload: formData });
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    alert("Profile updated successfully");
+    try {
+      const updatedProfile = await editOwnerProfile(formData);
+      console.dir(updatedProfile);
+      alert('Profile updated successfully');
+      setOwnerState(updatedProfile.owner);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('An error occurred while updating the profile.');
+    }
   };
 
-  const handleDelete = () => {
-    dispatch({ type: "DELETE_USER", payload: formData.email });
-    const updatedUsers = state.users.filter(
-      (user) => user.email !== formData.email
-    );
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    console.log(localStorage);
-    alert("Profile deleted successfully");
-    navigate("/");
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
+    if (confirmDelete) {
+      try {
+        await deleteOwnerProfile(formData.password);
+        alert('Profile deleted successfully');
+        navigate('/');
+      } catch (error) {
+        console.error('Error deleting profile:', error);
+        alert('An error occurred while deleting the profile.');
+      }
+    }
   };
 
-  const buttonStyle = { width: "260px", mb: 2 }; // Consistent button style
+  const buttonStyle = { width: '260px', mb: 2 };
 
   return (
     <Container maxWidth="md">
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          mb: 3,
-        }}
-      >
-        <Box
-          sx={{
-            width: "300px",
-            height: "300px",
-            border: "1px solid #ccc",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {photoPreview ? (
-            <img
-              src={photoPreview}
-              alt="Pet"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          ) : (
-            <Typography variant="body1">Pet Photo</Typography>
-          )}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+        <Box sx={{ width: '300px', height: '300px', border: '1px solid #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {photoPreview ? <img src={photoPreview} alt="Pet" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Typography variant="body1">Pet Photo</Typography>}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-          }}
-        >
-          <Button variant="contained" component="label" sx={buttonStyle}>
-            Upload Pet Photo
-            <input type="file" hidden onChange={handleFileChange} />
-          </Button>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Button
-            type="submit"
             variant="contained"
-            color="primary"
-            onClick={handleSubmit}
+            component="label"
             sx={buttonStyle}
           >
+            Upload Pet Photo
+            <input
+              type="file"
+              hidden
+              onChange={handleFileChange}
+            />
+          </Button>
+          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={buttonStyle}>
             Save
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => navigate("/")}
-            sx={buttonStyle}
-          >
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={buttonStyle}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDelete}
-            sx={buttonStyle}
-          >
+          <Button variant="contained" color="error" onClick={handleDelete} sx={buttonStyle}>
             Delete
           </Button>
         </Box>
@@ -169,24 +141,15 @@ function OwnerProfile() {
           required
           fullWidth
           label="Location"
-          name="location"
-          value={formData.location}
+          name="areaLocation"
+          value={formData.areaLocation}
           onChange={handleChange}
         />
         <FormControl component="fieldset" sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Gender</FormLabel>
-          <RadioGroup
-            row
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-          >
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel
-              value="female"
-              control={<Radio />}
-              label="Female"
-            />
+          <RadioGroup row name="petGender" value={formData.petGender} onChange={handleChange}>
+            <FormControlLabel value="Male" control={<Radio />} label="Male" />
+            <FormControlLabel value="Female" control={<Radio />} label="Female" />
           </RadioGroup>
         </FormControl>
         <TextField
@@ -194,8 +157,8 @@ function OwnerProfile() {
           required
           fullWidth
           label="Pet Breed"
-          name="breed"
-          value={formData.breed}
+          name="petBreed"
+          value={formData.petBreed}
           onChange={handleChange}
         />
         <TextField
@@ -203,28 +166,23 @@ function OwnerProfile() {
           required
           fullWidth
           label="Pet Age"
-          name="age"
-          value={formData.age}
+          name="petAge"
+          value={formData.petAge}
           onChange={handleChange}
         />
         <FormControl fullWidth sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Size</FormLabel>
-          <Select name="size" value={formData.size} onChange={handleChange}>
-            <MenuItem value="small">Small</MenuItem>
-            <MenuItem value="medium">Medium</MenuItem>
-            <MenuItem value="large">Large</MenuItem>
+          <Select name="petSize" value={formData.petSize} onChange={handleChange}>
+            <MenuItem value="Small">Small</MenuItem>
+            <MenuItem value="Medium">Medium</MenuItem>
+            <MenuItem value="Large">Large</MenuItem>
           </Select>
         </FormControl>
         <FormControl component="fieldset" sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Neutered</FormLabel>
-          <RadioGroup
-            row
-            name="neutered"
-            value={formData.neutered}
-            onChange={handleChange}
-          >
-            <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-            <FormControlLabel value="no" control={<Radio />} label="No" />
+          <RadioGroup row name="petIsNeutered" value={formData.petIsNeutered} onChange={handleChange}>
+            <FormControlLabel value={true} control={<Radio />} label="Yes" />
+            <FormControlLabel value={false} control={<Radio />} label="No" />
           </RadioGroup>
         </FormControl>
         <TextField
@@ -232,8 +190,8 @@ function OwnerProfile() {
           required
           fullWidth
           label="Pet Description"
-          name="description"
-          value={formData.description}
+          name="petDescription"
+          value={formData.petDescription}
           onChange={handleChange}
         />
         <TextField
@@ -270,4 +228,4 @@ function OwnerProfile() {
   );
 }
 
-export default OwnerProfile;
+export default OwnerProfilePage;
