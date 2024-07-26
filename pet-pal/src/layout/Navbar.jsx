@@ -1,9 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./NavBar.module.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
+import { JWT_TOKEN } from "../service/PetPalService";
 import pawicon from "../common/images/paw-icon.png";
 
 const Navbar = () => {
+  // Redirect to login if not logged in
+  const location = useLocation();
+  const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false;
+  if (!isLoggedIn) {
+    return <Navigate to="/" state={{ from: location }} />;
+  }
+
   return (
     <div>
       <nav
