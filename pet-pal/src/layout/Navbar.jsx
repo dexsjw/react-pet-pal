@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import { getOwnerProfile } from "../service/PetPalService";
 import { JWT_TOKEN } from "../service/PetPalService";
 
+const LOGOUT_TEXT = "Logout";
 const navLinkProps = [
   {text: "View Pets", path: "/view-pet"}, 
   {text: "My Profile", path: "/profile"},
   {text: "Chat", path: "/chat"}, 
-  {text: "Logout", path: "/"},
+  {text: LOGOUT_TEXT, path: "/"},
 ]
 
 const Navbar = () => {
@@ -30,6 +31,14 @@ const Navbar = () => {
   async function retrieveOwnerProfile() {
     const payload = await getOwnerProfile();
     return payload.owner;
+  }
+
+  const handleNavigate = (navLinkProp) => {
+    if (navLinkProp.text === LOGOUT_TEXT) {
+      localStorage.removeItem(JWT_TOKEN);
+    }
+    console.log(navLinkProp.path);
+    navigate(navLinkProp.path);
   }
 
   return (
@@ -72,7 +81,7 @@ const Navbar = () => {
             <ListItem >
               <ListItemButton 
                 key={index}
-                onClick={() => navigate(navLinkProp.path)}
+                onClick={() => handleNavigate(navLinkProp)}
               >
                 <ListItemText 
                   primary={navLinkProp.text}
