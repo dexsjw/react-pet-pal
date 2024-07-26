@@ -1,0 +1,25 @@
+nav {
+  position: fixed
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul {
+  margin-left: 1rem
+}
+
+nav ul li {
+  margin: 10px 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}

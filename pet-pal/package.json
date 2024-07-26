@@ -12,11 +12,16 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mockoon/cli": "^8.3.0",
+    "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.2",
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.7.2",
+    "normalize.css": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "react-toastify": "^10.0.5"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

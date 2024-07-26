@@ -1,20 +1,28 @@
-1. Login Page
-Google OAuth -> pic, email etc (tbc)
-login: {
-    username: string,
-    password: string
-}
+## 1. Login Page
+## Google OAuth -> pic, email etc (tbc)
+## This object will not be used as idea was scraped.
+## Everything will be in owner object
+## ownerAuth: {
+##     ownerId: uuid,
+##     email: string,
+##     password: string,
+##     isLoggedIn: boolean
+## }
 
 
 
 2. View Pet
-ownerProfile: {
+owner: {
+    email: string,
+    password: string,
+    isLoggedIn: boolean,
     ownerId: uuid,
     ownerName: string,
     ownerMatches: ownerId[] -> an array of ownerIds,
-    areaLocation: string,
-    petPicture: url string,
+    areaLocation: string (e.g. Bishan, Changi, Orchard),
+    petPicture: url string[] -> an array of randomly generated url string (own photo if have time), 
     petName: string,
+    petBreed: string,
     petGender: enum(male, female),
     petAge: number,
     petSize: enum(small, medium, large),
@@ -22,16 +30,20 @@ ownerProfile: {
     petIsNeutered: boolean
 }
 
-ownerProfiles： ownerProfile[] -> an array of ownerProfile
+owners： owners[] -> an array of owners
 
 
 
 3. Owner Profile
-ownerProfile: {
+owner: {
+    email: string,
+    password: string,
+    isLoggedIn: boolean,
     ownerId: uuid,
-    areaLocation: string (e.g. Bishan, Changi, Orchard),
     ownerName: string,
-    petPicture: url string (generate random url string -> own photo if have time), 
+    ownerMatches: ownerId[] -> an array of ownerIds,
+    areaLocation: string (e.g. Bishan, Changi, Orchard),
+    petPicture: url string[] -> an array of randomly generated url string (own photo if have time), 
     petName: string,
     petBreed: string,
     petGender: enum(male, female),
