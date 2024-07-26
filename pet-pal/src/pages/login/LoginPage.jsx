@@ -36,7 +36,7 @@ function LoginPage() {
         <Typography variant="h4" gutterBottom>
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box component="form" sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -44,8 +44,8 @@ function LoginPage() {
             label="Email"
             name="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={credentials.email}
+            onChange={handleCredentialsChange}
           />
           <TextField
             margin="normal"
@@ -54,8 +54,8 @@ function LoginPage() {
             label="Password"
             name="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={credentials.password}
+            onChange={handleCredentialsChange}
           />
           <Button
             type="submit"

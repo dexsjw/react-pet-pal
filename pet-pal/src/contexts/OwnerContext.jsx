@@ -1,48 +1,65 @@
-// ProductContext.js
-import { createContext, useReducer } from "react";
-import { initialState, ownerReducer } from "../reducers/ownerReducer";
+import { createContext, useReducer, useState } from "react";
+import { initialOwnerState, ownerReducer } from "../reducers/ownerReducer";
 
 const OwnerContext = createContext();
 
 export function OwnerProvider({ children }) {
-  const [state, dispatch] = useReducer(ownerReducer, initialState);
+  const [ownerPromiseState, dispatch] = useReducer(ownerReducer, initialOwnerState);
+  const [ownerState, setOwnerState] = useState(initialOwnerState);
 
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "setOwner":
-        return action.payload;
-      default:
-        return state;
+  const handleOwnerLogin = async (credentials) => {
+    dispatch({type: "OWNER_LOGIN", credentials});
+    try {
+      setOwnerState(await ownerPromiseState);
+      console.log(ownerState);
+    } catch (error) {
+      console.log("Error: ", error);
     }
+  }
+
+  const handleGetOwnerJwt = async (jwtToken) => {
+    dispatch({type: "GET_OWNER_JWT", jwtToken});
+    try {
+      setOwnerState(await ownerPromiseState);
+      console.log(ownerState);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+
+  const handleCreateOwner = async (owner) => {
+    dispatch({type: "CREATE_OWNER", owner});
+    try {
+      setOwnerState(await ownerPromiseState);
+      console.log(ownerState);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+
+  const handleEditOwner = async (owner) => {
+    dispatch({type: "EDIT_OWNER", owner});
+    try {
+      setOwnerState(await ownerPromiseState);
+      console.log(ownerState);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  }
+
+  const contextValue = {
+    ownerPromiseState,
+    ownerState,
+    handleOwnerLogin,
+    handleGetOwnerJwt,
+    handleCreateOwner,
+    handleEditOwner
   };
 
-  // ? To setState with this, use the following:
-  // context.dispatchOwner({
-  //   type: "setOwner",
-  //   payload: { ...context.owner, ownerName: "Jack" }, // change ownerName for example
-  // })
-
-  const [owner, dispatchOwner] = useReducer(reducer, {
-    ownerId: "abc123", // string
-    areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
-    ownerName: "Ben", // string
-    petPicture: [
-      "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg",
-      "https://images.dog.ceo/breeds/hound-english/n02089973_1623.jpg",
-    ], // url string array (generate random url string -> own photo if have time)
-    petName: "Winnie", // string
-    petBreed: "I don't know", // string
-    petGender: "Male", // Male / Female,
-    petAge: 8, // number
-    petSize: "Medium", // small / medium / large
-    petDescription: "Good Boye", // string
-    petIsNeutered: false, // boolean
-  });
-
-  const context = { owner, dispatchOwner, state, dispatch };
-
   return (
-    <OwnerContext.Provider value={context}>{children}</OwnerContext.Provider>
+    <OwnerContext.Provider value={contextValue}>
+      {children}
+    </OwnerContext.Provider>
   );
 }
 
