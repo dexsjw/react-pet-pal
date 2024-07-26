@@ -10,11 +10,14 @@ const ViewPetPage = () => {
   // petPalMockApi.get("/owner-profile").then((response) => {
   //   setMockData(response.data);
   // });
-  setOwnersState;
+  
+  async function getViewPet() {
+    const payload = await viewPet();
+    setOwnersState(payload.owners);
+  }
 
   useEffect(() => {
-    async () => setOwnersState(await viewPet());
-    console.log("ownersState", ownersState);
+    getViewPet();
   }, []);
 
   return (
