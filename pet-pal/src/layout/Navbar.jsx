@@ -1,10 +1,25 @@
-import { Link, useLocation } from "react-router-dom";
-import "./NavBar.module.css";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, useLocation, Navigate, useNavigate } from "react-router-dom";
+import { Avatar, Box, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
+import useOwnerContext from "../contexts/useOwnerContext";
+import { useEffect } from "react";
+import { getOwnerProfile } from "../service/PetPalService";
 import { JWT_TOKEN } from "../service/PetPalService";
-import pawicon from "../common/images/paw-icon.png";
+
+const navLinkProps = [
+  {text: "View Pets", path: "/view-pet"}, 
+  {text: "My Profile", path: "/profile"},
+  {text: "Chat", path: "/chat"}, 
+  {text: "Logout", path: "/"},
+]
 
 const Navbar = () => {
+  useEffect(() => {
+    setOwnerState(retrieveOwnerProfile());
+  }, [])
+
+  const { setOwnerState} = useOwnerContext();
+  const navigate = useNavigate();
+
   // Redirect to login if not logged in
   const location = useLocation();
   const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false;
@@ -12,67 +27,68 @@ const Navbar = () => {
     return <Navigate to="/" state={{ from: location }} />;
   }
 
+  async function retrieveOwnerProfile() {
+    const payload = await getOwnerProfile();
+    return payload.owner;
+  }
+
   return (
-    <div>
-      <nav
-        style={{
+    <>
+      <Drawer 
+        variant="permanent"
+        sx={{
           width: "18vw",
-          float: "left",
-          backgroundColor: "rgba(173, 216, 230, 255)",
-          height: "100vh",
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: "18vw",
+            boxSizing: 'border-box',
+            backgroundColor: "#4986C7"
+          },
         }}
       >
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
-            margin: "1rem 0 0 1rem",
-            gap: "0.5rem",
+            mt: 8,
           }}
         >
-          <img
-            src={pawicon}
-            style={{
-              width: "2rem",
-              height: "2rem",
-              borderRadius: "9999rem",
-              padding: "0.5rem",
-              backgroundColor: "rgba(150, 150, 150)",
-            }}
+          <Avatar 
+            alt="Paw Icon"
+            src="https://images.dog.ceo/breeds/collie-border/n02106166_59.jpg"
+            // src='../../common/images/paw-icon.png'
+            sx={{ width: 100, height: 100 }}
           />
-          <h1
-            style={{
-              fontSize: "1.5rem",
-              color: "#6B6B6B",
-            }}
+          <Typography 
+            variant="h3"
+            sx={{color: "#ffffff"}}
           >
-            PET PAL
-          </h1>
-        </div>
-
-        <ul>
-          {/* <li>
-            <Link to="/">Home</Link>
-          </li> */}
-          <li>
-            <Link to="/view-pet">View Pets</Link>
-          </li>
-          <li>
-            <Link to="/profile/123">My Profile</Link>
-          </li>
-          <li>
-            <Link to="/chat">Chat</Link>
-          </li>
-          <li>
-            <Link to="/view-pet/123">PetProfile Temp</Link>
-          </li>
-        </ul>
-      </nav>
-      <div style={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}>
+            Pet Pal
+          </Typography>
+        </Box>
+        {navLinkProps.map((navLinkProp, index) => (
+          <List key={index}>
+            <ListItem >
+              <ListItemButton 
+                key={index}
+                onClick={() => navigate(navLinkProp.path)}
+              >
+                <ListItemText 
+                  primary={navLinkProp.text}
+                  sx={{color: "#E8F0FF"}}
+                />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        ))}
+      </Drawer>
+      <Box
+        sx={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}
+      >
         <Outlet />
-      </div>
-    </div>
+      </Box>
+    </>
   );
 };
 
