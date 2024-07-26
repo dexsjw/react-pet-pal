@@ -1,10 +1,11 @@
-// src/pages/register/Register.jsx
-import React, { useState } from 'react';
+// src/pages/login/Register.jsx
+import React, { useContext, useState } from 'react';
 import { Container, TextField, Button, Typography, Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Select } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { editOwnerProfile } from '../../service/PetPalService'; // Import your API function
+import OwnerContext from '../../contexts/OwnerContext';
 
-function Register() {
+function RegisterPage() {
+  const { state, dispatch } = useContext(OwnerContext);
   const [formData, setFormData] = useState({
     petName: '',
     location: '',
@@ -38,23 +39,26 @@ function Register() {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const response = await editOwnerProfile(formData);
-    if (response.success) {
-      alert('Profile registered successfully');
+
+    // Attempt to save data and catch storage quota errors
+    try {
+      dispatch({ type: 'ADD_USER', payload: formData });
+      const updatedUsers = [...state.users, formData];
+      localStorage.setItem('users', JSON.stringify(updatedUsers));
+      alert('User registered successfully');
+      console.log(localStorage);
       navigate('/');
-    } else {
-      alert('Error registering profile');
+    } catch (error) {
+      alert('Failed to register user. Storage quota exceeded.');
+      console.error('Storage error:', error);
     }
   };
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Register
-      </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
         <Box sx={{ width: '300px', height: '300px', border: '1px solid #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {photoPreview ? <img src={photoPreview} alt="Pet" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Typography variant="body1">Pet Photo</Typography>}
         </Box>
@@ -62,7 +66,7 @@ function Register() {
           <Button
             variant="contained"
             component="label"
-            sx={{ mb: 2 }}
+            sx={{ width: '260px', mb: 2 }}
           >
             Upload Pet Photo
             <input
@@ -71,10 +75,10 @@ function Register() {
               onChange={handleFileChange}
             />
           </Button>
-          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={{ mb: 2 }}>
+          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={{ width: '260px', mb: 2 }}>
             Register
           </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={{ mb: 2 }}>
+          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={{ width: '260px', mb: 2 }}>
             Cancel
           </Button>
         </Box>
@@ -176,15 +180,9 @@ function Register() {
           value={formData.password}
           onChange={handleChange}
         />
-        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-          Register
-        </Button>
-        <Button fullWidth variant="outlined" color="secondary" onClick={() => navigate('/')}>
-          Cancel
-        </Button>
       </Box>
     </Container>
   );
 }
 
-export default Register;
+export default RegisterPage;

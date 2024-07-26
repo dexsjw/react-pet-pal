@@ -182,6 +182,16 @@ export const editOwnerProfile = async (owner) => {
   return response;
 };
 
+export const deleteOwnerProfile = async (email) => {
+  try {
+    const response = await petPalApi.delete(`/profile/${email}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error encountered when deleting profile:', error);
+    return { success: false, message: error.message };
+  }
+};
+
 export const viewPet = async () => {
   let response = [];
   try {

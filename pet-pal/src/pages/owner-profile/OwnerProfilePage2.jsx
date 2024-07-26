@@ -1,121 +1,155 @@
 // src/pages/owner-profile/OwnerProfile.jsx
-import React, { useState, useEffect } from 'react';
-import { Container, TextField, Button, Typography, Box, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, MenuItem, Select } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useOwnerContext } from '../../contexts/useOwnerContext';
-import { getOwnerProfile, editOwnerProfile, deleteOwnerProfile } from '../../service/PetPalService'
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import useOwnerContext from "../../contexts/useOwnerContext";
 
-function OwnerProfilePage() {
+function OwnerProfile() {
   const { state, dispatch } = useOwnerContext();
   const [formData, setFormData] = useState({
-    petName: '',
-    location: '',
-    gender: '',
-    breed: '',
-    age: '',
-    size: '',
-    neutered: '',
-    description: '',
-    ownerName: '',
-    email: '',
-    password: '',
-    petPhoto: ''
+    petName: "",
+    location: "",
+    gender: "",
+    breed: "",
+    age: "",
+    size: "",
+    neutered: "",
+    description: "",
+    ownerName: "",
+    email: "",
+    password: "",
+    petPhoto: "",
   });
 
   const [photoPreview, setPhotoPreview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const loggedInUserEmail = localStorage.getItem('loggedInUser');
-      if (loggedInUserEmail) {
-        const userProfile = await getOwnerProfile(loggedInUserEmail);
-        if (userProfile) {
-          setFormData(userProfile);
-          setPhotoPreview(userProfile.petPhoto);
-        }
-      }
-    };
-
-    fetchProfile();
-  }, []);
+    const loggedInUserEmail = localStorage.getItem("loggedInUser");
+    const userData = state.users.find(
+      (user) => user.email === loggedInUserEmail
+    );
+    if (userData) {
+      setFormData(userData);
+      setPhotoPreview(userData.petPhoto);
+    }
+  }, [state.users]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setFormData(prevState => ({ ...prevState, petPhoto: reader.result }));
+      setFormData((prevState) => ({ ...prevState, petPhoto: reader.result }));
       setPhotoPreview(reader.result);
     };
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const response = await editOwnerProfile(formData);
-    if (response.success) {
-      alert('Profile updated successfully');
-      navigate('/profile');
-    } else {
-      alert('Error updating profile');
-    }
+    const updatedUsers = state.users.map((user) =>
+      user.email === formData.email ? formData : user
+    );
+    dispatch({ type: "UPDATE_USER", payload: formData });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    alert("Profile updated successfully");
   };
 
-  const handleDelete = async () => {
-    const confirmed = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
-    if (confirmed) {
-      try {
-        // Make API call to delete the profile
-        const response = await deleteOwnerProfile(formData.email);
-        if (response.success) {
-          dispatch({ type: 'DELETE_USER', payload: formData.email });
-          alert('Profile deleted successfully');
-          localStorage.removeItem('loggedInUser');
-          navigate('/');
-        } else {
-          alert('Error deleting profile');
-        }
-      } catch (error) {
-        console.error('Error deleting profile:', error);
-        alert('An error occurred while deleting the profile.');
-      }
-    }
+  const handleDelete = () => {
+    dispatch({ type: "DELETE_USER", payload: formData.email });
+    const updatedUsers = state.users.filter(
+      (user) => user.email !== formData.email
+    );
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    console.log(localStorage);
+    alert("Profile deleted successfully");
+    navigate("/");
   };
+
+  const buttonStyle = { width: "260px", mb: 2 }; // Consistent button style
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Owner Profile
-      </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
-        <Box sx={{ width: '300px', height: '300px', border: '1px solid #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {photoPreview ? <img src={photoPreview} alt="Pet" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <Typography variant="body1">Pet Photo</Typography>}
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-          <Button
-            variant="contained"
-            component="label"
-            sx={{ mb: 2 }}
-          >
-            Upload Pet Photo
-            <input
-              type="file"
-              hidden
-              onChange={handleFileChange}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          mb: 3,
+        }}
+      >
+        <Box
+          sx={{
+            width: "300px",
+            height: "300px",
+            border: "1px solid #ccc",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {photoPreview ? (
+            <img
+              src={photoPreview}
+              alt="Pet"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
+          ) : (
+            <Typography variant="body1">Pet Photo</Typography>
+          )}
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          <Button variant="contained" component="label" sx={buttonStyle}>
+            Upload Pet Photo
+            <input type="file" hidden onChange={handleFileChange} />
           </Button>
-          <Button type="submit" variant="contained" color="primary" onClick={handleSubmit} sx={{ mb: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            sx={buttonStyle}
+          >
             Save
           </Button>
-          <Button variant="outlined" color="secondary" onClick={() => navigate('/')} sx={{ mb: 2 }}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/")}
+            sx={buttonStyle}
+          >
             Cancel
           </Button>
-          <Button variant="contained" color="error" onClick={handleDelete} sx={{ mb: 2 }}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleDelete}
+            sx={buttonStyle}
+          >
             Delete
           </Button>
         </Box>
@@ -141,9 +175,18 @@ function OwnerProfilePage() {
         />
         <FormControl component="fieldset" sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Gender</FormLabel>
-          <RadioGroup row name="gender" value={formData.gender} onChange={handleChange}>
+          <RadioGroup
+            row
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+          >
             <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
+            <FormControlLabel
+              value="female"
+              control={<Radio />}
+              label="Female"
+            />
           </RadioGroup>
         </FormControl>
         <TextField
@@ -174,7 +217,12 @@ function OwnerProfilePage() {
         </FormControl>
         <FormControl component="fieldset" sx={{ mt: 2 }}>
           <FormLabel component="legend">Pet Neutered</FormLabel>
-          <RadioGroup row name="neutered" value={formData.neutered} onChange={handleChange}>
+          <RadioGroup
+            row
+            name="neutered"
+            value={formData.neutered}
+            onChange={handleChange}
+          >
             <FormControlLabel value="yes" control={<Radio />} label="Yes" />
             <FormControlLabel value="no" control={<Radio />} label="No" />
           </RadioGroup>
@@ -222,4 +270,4 @@ function OwnerProfilePage() {
   );
 }
 
-export default OwnerProfilePage;
+export default OwnerProfile;
