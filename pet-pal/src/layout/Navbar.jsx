@@ -17,7 +17,9 @@ const Navbar = () => {
     setOwnerState(retrieveOwnerProfile());
   }, [])
 
-  const {setOwnerState} = useOwnerContext();
+  const { setOwnerState} = useOwnerContext();
+  // const { ownerState, setOwnerState} = useOwnerContext();
+  // const navigate = useNavigate();
 
   // Redirect to login if not logged in
   const location = useLocation();
@@ -25,7 +27,6 @@ const Navbar = () => {
   if (!isLoggedIn) {
     return <Navigate to="/" state={{ from: location }} />;
   }
-  // const navigate = useNavigate();
 
   async function retrieveOwnerProfile() {
     const payload = await getOwnerProfile();
@@ -42,7 +43,7 @@ const Navbar = () => {
           '& .MuiDrawer-paper': {
             width: "18vw",
             boxSizing: 'border-box',
-            backgroundColor: "#3063C3"
+            backgroundColor: "#4986C7"
           },
         }}
       >
@@ -60,19 +61,26 @@ const Navbar = () => {
             // src='../../common/images/paw-icon.png'
             sx={{ width: 100, height: 100 }}
           />
-          <Typography variant="h3">Pet Pal</Typography>
+          <Typography 
+            variant="h3"
+            sx={{color: "#ffffff"}}
+          >
+            Pet Pal
+          </Typography>
         </Box>
         {navLinkProps.map((navLinkProp, index) => (
           <List key={index}>
             <ListItem >
-              <ListItemButton key={index}>
+              <ListItemButton 
+                key={index}
+                // onClick={navLinkProp.needOwnerId 
+                //   ? navigate(`${navLinkProp.path}/${ownerState.ownerId}`)
+                //   : navigate(navLinkProp.path)
+                // }
+              >
                 <ListItemText 
                   primary={navLinkProp.text}
                   sx={{color: "#E8F0FF"}}
-                  // onClick={navLinkProp.needOwnerId 
-                  //   ? navigate(`${navLinkProp.path}/${ownerState.ownerId}`)
-                  //   : navigate(navLinkProp.path)
-                  // }
                 />
               </ListItemButton>
             </ListItem>
