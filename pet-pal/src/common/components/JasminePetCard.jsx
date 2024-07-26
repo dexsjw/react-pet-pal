@@ -10,17 +10,22 @@ import {
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { CardActionArea } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const JasminePetCard = (props) => {
+
+  const navigate = useNavigate();
+
   return (
     <Card sx={{ width: 500 }}>
       <CardActionArea
         onClick={() => {
-          if (document.location.href.endsWith("/")) {
-            document.location.href = document.location.href + props.id;
-          } else {
-            document.location.href = document.location.href + "/" + props.id;
-          }
+          navigate(`/view-pet/${props.id}`);
+          // if (document.location.href.endsWith("/")) {
+          //   document.location.href = document.location.href + props.id;
+          // } else {
+          //   document.location.href = document.location.href + "/" + props.id;
+          // }
         }}
       >
         <CardMedia

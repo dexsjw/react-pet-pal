@@ -1,31 +1,44 @@
 import { BackButton } from "../../common/components/Components";
-import { useState } from "react";
-import useOwnerContext from "../../contexts/useOwnerContext";
+import { useEffect } from "react";
+// import useOwnerContext from "../../contexts/useOwnerContext";
 
-import { PetCard } from "../../common/components/Components";
-import { LeftArrowSVG, RightArrowSVG } from "../../common/svgs/SVGs";
+// import { PetCard } from "../../common/components/Components";
+// import { LeftArrowSVG, RightArrowSVG } from "../../common/svgs/SVGs";
+import { useParams } from "react-router-dom";
+import { viewPetByOwnerId } from "../../service/PetPalService";
 
 // cardDetails props: img, petName, description, petGender, location, petAge
 const ViewPetProfilePage = () => {
-  const context = useOwnerContext();
-  const [currentpic, setCurrentPic] = useState(0);
 
-  const renderArrows = context.owner.petPicture.length <= 1 ? false : true;
+  const {ownerId} = useParams();
 
-  const nextPic = () => {
-    if (currentpic >= context.owner.petPicture.length - 1) {
-      setCurrentPic(0);
-    } else {
-      setCurrentPic((prev) => prev + 1);
-    }
-  };
-  const prevPic = () => {
-    if (currentpic !== 0) {
-      setCurrentPic((prev) => prev - 1);
-    } else {
-      setCurrentPic(context.owner.petPicture.length - 1);
-    }
-  };
+  async function getViewPetByOwnerId() {
+    const payload = await viewPetByOwnerId(ownerId);
+    return payload.owner;
+  }
+
+  useEffect(() => {
+    getViewPetByOwnerId();
+  }, []);
+
+  // const [currentpic, setCurrentPic] = useState(0);
+
+  // const renderArrows = context.owner.petPicture.length <= 1 ? false : true;
+
+  // const nextPic = () => {
+  //   if (currentpic >= context.owner.petPicture.length - 1) {
+  //     setCurrentPic(0);
+  //   } else {
+  //     setCurrentPic((prev) => prev + 1);
+  //   }
+  // };
+  // const prevPic = () => {
+  //   if (currentpic !== 0) {
+  //     setCurrentPic((prev) => prev - 1);
+  //   } else {
+  //     setCurrentPic(context.owner.petPicture.length - 1);
+  //   }
+  // };
 
   // ? This sets the page title, is there a better way to do it, or to put it on each page?
   // useEffect(() => {
@@ -42,7 +55,7 @@ const ViewPetProfilePage = () => {
         }}
       >
         <BackButton />
-        <div
+        {/* <div
           style={{
             display: "flex",
             flexDirection: "row",
@@ -80,7 +93,7 @@ const ViewPetProfilePage = () => {
           ) : (
             <></>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );
