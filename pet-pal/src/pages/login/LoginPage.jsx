@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -7,17 +7,33 @@ import {
   Box,
   Avatar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useOwnerContext from "../../contexts/useOwnerContext";
 import { JWT_TOKEN } from "../../service/PetPalService";
+import { toast } from "react-toastify";
+import { login } from "../../service/PetPalService";
 
 function LoginPage() {
-  const { handleOwnerLogin } = useOwnerContext();
+  const { setOwnerState } = useOwnerContext();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/view-pet";
+  const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false;
+
+  useEffect(() => {
+    if (location.state?.from?.pathname && !isLoggedIn) {
+      toast.warning("You need to log in to view that page");
+    } else if (isLoggedIn) {
+      toast.warning("You're already logged in, redirecting...");
+      setTimeout(() => {
+        navigate("/view-pet");
+      }, 3000);
+    }
+  }, []);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
 
   const handleCredentialsChange = (e) => {
     setCredentials((prevState) => {
@@ -26,16 +42,14 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    try {
-      await handleOwnerLogin(credentials);
-    } catch (error) {
-      console.log("Error: ", error);
-    } finally {
-      if (localStorage.getItem(JWT_TOKEN)) {
-        navigate("/view-pet");
-      } else {
-        alert("Wrong credentials provided!");
-      }
+    const response = await login(credentials);
+    if (response.error) {
+      toast.error(response.status);
+    } else {
+      console.log("success!")
+      setOwnerState(response.owner);
+      navigate(from, { replace: true });
+      toast.success("Login successful");
     }
   };
 
