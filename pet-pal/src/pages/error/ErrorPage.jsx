@@ -3,7 +3,9 @@ const ErrorPage = ({ error, resetErrorBoundary }) => {
   return (
     <div role="alert">
       <p>Something went wrong:</p>
-      <pre style={{ color: "red" }}>{error.message}</pre>
+      <pre style={{ color: "red" }}>
+        {error && error.message ? error.message : "An error occurred"}
+      </pre>
       <button onClick={() => resetErrorBoundary()}>Retry Render</button>
     </div>
   );

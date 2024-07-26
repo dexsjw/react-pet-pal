@@ -48,7 +48,7 @@ function App() {
               element={<ViewPetPage />}
             />
             <Route
-              path="/view-pet/:id"
+              path="/view-pet/:ownerId"
               errorElement={<ErrorPage />}
               element={<ViewPetProfilePage />}
             />
