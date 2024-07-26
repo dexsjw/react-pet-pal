@@ -73,7 +73,7 @@ const PetCard = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="contained" size="large" style={{width: "100%"}}>
+        <Button variant="contained" size="large" style={{ width: "100%" }}>
           Meet {petName}
         </Button>
       </CardActions>
