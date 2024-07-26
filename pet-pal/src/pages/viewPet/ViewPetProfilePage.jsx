@@ -1,13 +1,13 @@
 import { BackButton } from "../../common/components/Components";
-import OwnerContext from "../../contexts/OwnerContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
+import useOwnerContext from "../../contexts/useOwnerContext";
 
 import { PetCard } from "../../common/components/Components";
 import { LeftArrowSVG, RightArrowSVG } from "../../common/svgs/SVGs";
 
 // cardDetails props: img, petName, description, petGender, location, petAge
 const ViewPetProfilePage = () => {
-  const context = useContext(OwnerContext);
+  const context = useOwnerContext();
   const [currentpic, setCurrentPic] = useState(0);
 
   const renderArrows = context.owner.petPicture.length <= 1 ? false : true;

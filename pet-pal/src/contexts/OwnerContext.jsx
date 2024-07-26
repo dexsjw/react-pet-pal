@@ -26,7 +26,10 @@ export function OwnerProvider({ children }) {
     ownerId: "abc123", // string
     areaLocation: "Bishan", // string (e.g. Bishan, Changi, Orchard),
     ownerName: "Ben", // string
-    petPicture: ["https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg", "https://images.dog.ceo/breeds/hound-english/n02089973_1623.jpg"], // url string array (generate random url string -> own photo if have time)
+    petPicture: [
+      "https://images.dog.ceo/breeds/schipperke/n02104365_67.jpg",
+      "https://images.dog.ceo/breeds/hound-english/n02089973_1623.jpg",
+    ], // url string array (generate random url string -> own photo if have time)
     petName: "Winnie", // string
     petBreed: "I don't know", // string
     petGender: "Male", // Male / Female,
@@ -36,10 +39,11 @@ export function OwnerProvider({ children }) {
     petIsNeutered: false, // boolean
   });
 
-  const context = { owner, dispatchOwner };
+  const context = { owner, dispatchOwner, state, dispatch };
 
   return (
     <OwnerContext.Provider value={context}>{children}</OwnerContext.Provider>
   );
 }
+
 export default OwnerContext;
