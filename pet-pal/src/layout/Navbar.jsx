@@ -1,70 +1,84 @@
-import { Link } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import "./NavBar.module.css";
-import { Outlet } from "react-router-dom";
-import pawicon from "../common/images/paw-icon.png";
+import { Avatar, Box, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
+import useOwnerContext from "../contexts/useOwnerContext";
+import { useEffect } from "react";
+import { getOwnerProfile } from "../service/PetPalService";
+
+const navLinkProps = [
+  {text: "View Pets", path: "/view-pet", needOwnerId: false}, 
+  {text: "My Profile", path: "/profile", needOwnerId: true},
+  {text: "Chat", path: "/chat", needOwnerId: false}, 
+  {text: "Logout", path: "/login", needOwnerId: false},
+]
 
 const Navbar = () => {
+  const {setOwnerState} = useOwnerContext();
+
+  // const navigate = useNavigate();
+
+  async function retrieveOwnerProfile() {
+    const payload = await getOwnerProfile();
+    return payload.owner;
+  }
+
+  useEffect(() => {
+    setOwnerState(retrieveOwnerProfile());
+  }, [])
+
   return (
-    <div>
-      <nav
-        style={{
+    <>
+      <Drawer 
+        variant="permanent"
+        sx={{
           width: "18vw",
-          float: "left",
-          backgroundColor: "rgba(173, 216, 230, 255)",
-          height: "100vh",
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: "18vw",
+            boxSizing: 'border-box',
+            backgroundColor: "#3063C3"
+          },
         }}
       >
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
-            margin: "1rem 0 0 1rem",
-            gap: "0.5rem",
+            mt: 8,
           }}
         >
-          <img
-            src={pawicon}
-            style={{
-              width: "2rem",
-              height: "2rem",
-              borderRadius: "9999rem",
-              padding: "0.5rem",
-              backgroundColor: "rgba(150, 150, 150)",
-            }}
+          <Avatar 
+            alt="Paw Icon"
+            src="https://images.dog.ceo/breeds/collie-border/n02106166_59.jpg"
+            // src='../../common/images/paw-icon.png'
+            sx={{ width: 100, height: 100 }}
           />
-          <h1
-            style={{
-              fontSize: "1.5rem",
-              color: "#6B6B6B",
-            }}
-          >
-            PET PAL
-          </h1>
-        </div>
-
-        <ul>
-          {/* <li>
-            <Link to="/">Home</Link>
-          </li> */}
-          <li>
-            <Link to="/view-pet">View Pets</Link>
-          </li>
-          <li>
-            <Link to="/profile/123">My Profile</Link>
-          </li>
-          <li>
-            <Link to="/chat">Chat</Link>
-          </li>
-          <li>
-            <Link to="/view-pet/123">PetProfile Temp</Link>
-          </li>
-        </ul>
-      </nav>
-      <div style={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}>
+          <Typography variant="h3">Pet Pal</Typography>
+        </Box>
+        {navLinkProps.map((navLinkProp, index) => (
+          <List key={index}>
+            <ListItem >
+              <ListItemButton key={index}>
+                <ListItemText 
+                  primary={navLinkProp.text}
+                  sx={{color: "#E8F0FF"}}
+                  // onClick={navLinkProp.needOwnerId 
+                  //   ? navigate(`${navLinkProp.path}/${ownerState.ownerId}`)
+                  //   : navigate(navLinkProp.path)
+                  // }
+                />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        ))}
+      </Drawer>
+      <Box
+        sx={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}
+      >
         <Outlet />
-      </div>
-    </div>
+      </Box>
+    </>
   );
 };
 
