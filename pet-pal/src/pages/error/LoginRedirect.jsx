@@ -1,17 +1,16 @@
 import { useNavigate, Outlet } from "react-router-dom";
 import { useEffect } from "react";
+import { JWT_TOKEN } from "../../service/PetPalService";
 
 const LoginRedirect = () => {
   const navigate = useNavigate();
-  const loggedInUserEmail = localStorage.getItem("loggedInUser");
+  const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false; 
 
   useEffect(() => {
-    if (loggedInUserEmail === null) {
+    if (!isLoggedIn) {
       navigate("/login", { replace: true });
-    } else {
-      navigate("/profile/123", { replace: true }); // Temp id of 123, should this just be /profile ? Else profile ID should be saved too
     }
-  }, [loggedInUserEmail]);
+  }, []);
 
   return <Outlet />;
 };
