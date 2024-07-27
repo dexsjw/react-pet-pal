@@ -1,5 +1,14 @@
 import { Outlet, useLocation, Navigate, useNavigate } from "react-router-dom";
-import { Avatar, Box, Drawer, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import useOwnerContext from "../contexts/useOwnerContext";
 import { useEffect } from "react";
 import { getOwnerProfile } from "../service/PetPalService";
@@ -16,9 +25,9 @@ const navLinkProps = [
 const Navbar = () => {
   useEffect(() => {
     setOwnerState(retrieveOwnerProfile());
-  }, [])
+  }, []);
 
-  const { setOwnerState} = useOwnerContext();
+  const { setOwnerState } = useOwnerContext();
   const navigate = useNavigate();
 
   // Redirect to login if not logged in
@@ -33,25 +42,27 @@ const Navbar = () => {
     return payload.owner;
   }
 
-  const handleNavigate = (navLinkProp) => {
+  const handlePath = (navLinkProp) => {
+    console.log(navLinkProp.text);
     if (navLinkProp.text === LOGOUT_TEXT) {
       localStorage.removeItem(JWT_TOKEN);
+      navigate(navLinkProp.path);
+    } else {
+      navigate(navLinkProp.path);
     }
-    console.log(navLinkProp.path);
-    navigate(navLinkProp.path);
-  }
+  };
 
   return (
     <>
-      <Drawer 
+      <Drawer
         variant="permanent"
         sx={{
           width: "18vw",
           flexShrink: 0,
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
             width: "18vw",
-            boxSizing: 'border-box',
-            backgroundColor: "#4986C7"
+            boxSizing: "border-box",
+            backgroundColor: "#4986C7",
           },
         }}
       >
@@ -63,38 +74,33 @@ const Navbar = () => {
             mt: 8,
           }}
         >
-          <Avatar 
+          <Avatar
             alt="Paw Icon"
             src="https://images.dog.ceo/breeds/collie-border/n02106166_59.jpg"
             // src='../../common/images/paw-icon.png'
             sx={{ width: 100, height: 100 }}
           />
-          <Typography 
-            variant="h3"
-            sx={{color: "#ffffff"}}
-          >
+          <Typography variant="h3" sx={{ color: "#ffffff" }}>
             Pet Pal
           </Typography>
         </Box>
         {navLinkProps.map((navLinkProp, index) => (
           <List key={index}>
-            <ListItem >
-              <ListItemButton 
+            <ListItem>
+              <ListItemButton
                 key={index}
-                onClick={() => handleNavigate(navLinkProp)}
+                onClick={() => handlePath(navLinkProp)}
               >
-                <ListItemText 
+                <ListItemText
                   primary={navLinkProp.text}
-                  sx={{color: "#E8F0FF"}}
+                  sx={{ color: "#E8F0FF" }}
                 />
               </ListItemButton>
             </ListItem>
           </List>
         ))}
       </Drawer>
-      <Box
-        sx={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}
-      >
+      <Box sx={{ margin: "0 0 0 18vw", padding: "1rem 0 0 1rem" }}>
         <Outlet />
       </Box>
     </>

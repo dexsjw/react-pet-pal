@@ -6,52 +6,59 @@ const LOGIN_PATH = "/api/login";
 const OWNER_PROFILE_PATH = "/api/owner-profile";
 const EDIT_PROFILE_PATH = "/api/edit-profile";
 const VIEW_PET_PATH = "/api/view-pet";
-const DELETE_PROFILE_PATH ="/api/delete-profile"
+const DELETE_PROFILE_PATH = "/api/delete-profile";
 
 export const register = async (owner) => {
-  let response = {};
   try {
-    const resp = await petPalApi.post(REGISTER_PATH, {owner});
+    const resp = await petPalApi.post(REGISTER_PATH, { owner });
     console.log("API Response: ", resp);
     localStorage.setItem(JWT_TOKEN, resp.data.payload.jwtToken);
-    response = resp.data.payload;
+    return resp.data.payload;
   } catch (error) {
     console.error(`Error encountered when POST ${REGISTER_PATH}`);
     console.error("owner: ", owner);
     console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
+
+    const errorMessage =
+      error.response && error.response.data
+        ? error.response.data.status
+        : "Unknown error";
+    console.error("Error status: ", errorMessage);
+
+    return { status: errorMessage, error: true, message: error.message };
   }
-  return response;
 };
 
 export const login = async (credentials) => {
-  let response = {};
   try {
     const resp = await petPalApi.post(LOGIN_PATH, credentials);
     console.log("API Response: ", resp);
     localStorage.setItem(JWT_TOKEN, resp.data.payload.jwtToken);
-    response = resp.data.payload;
-    // response = await findOwnerProfileByCredentials(credentials);
+    return resp.data.payload;
   } catch (error) {
     console.error(`Error encountered when POST ${LOGIN_PATH}`);
     console.error("credentials: ", credentials);
     console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
+
+    const errorMessage =
+      error.response && error.response.data
+        ? error.response.data.status
+        : "Unknown error";
+    console.error("Error status: ", errorMessage);
+
+    return { status: errorMessage, error: true, message: error.message };
   }
-  return response;
 };
 
 export const getOwnerProfile = async () => {
   let response = {};
   let jwtToken = "";
   if (localStorage.getItem(JWT_TOKEN)) {
-      jwtToken = localStorage.getItem(JWT_TOKEN)
+    jwtToken = localStorage.getItem(JWT_TOKEN);
   }
-  
+
   try {
-    const resp = await petPalApi.post(OWNER_PROFILE_PATH, {jwtToken});
+    const resp = await petPalApi.post(OWNER_PROFILE_PATH, { jwtToken });
     console.log("API Response: ", resp);
     response = resp.data.payload;
     // response = await findOwnerProfileByJwtToken(jwtToken);
@@ -66,32 +73,33 @@ export const getOwnerProfile = async () => {
 };
 
 export const editOwnerProfile = async (owner) => {
-  let response = {};
-  let jwtToken = "";
-  if (localStorage.getItem(JWT_TOKEN)) {
-      jwtToken = localStorage.getItem(JWT_TOKEN)
-  }
+  const jwtToken = localStorage.getItem(JWT_TOKEN) || "";
   try {
-    const resp = await petPalApi.post(EDIT_PROFILE_PATH, {jwtToken, owner});
+    const resp = await petPalApi.post(EDIT_PROFILE_PATH, { jwtToken, owner });
     console.log("API Response: ", resp);
-    response = resp.data.payload;
+    return resp.data.payload;
   } catch (error) {
     console.error(`Error encountered when POST ${EDIT_PROFILE_PATH}`);
     console.error("owner: ", owner);
     console.error("Error message: ", error.message);
-    console.error("Error: ", error.response.data.status);
-    response = {};
+
+    const errorMessage =
+      error.response && error.response.data
+        ? error.response.data.status
+        : "Unknown error";
+    console.error("Error status: ", errorMessage);
+
+    return { status: errorMessage, error: true, message: error.message };
   }
-  return response;
 };
 
 export const deleteOwnerProfile = async (password) => {
   let response = {};
   let jwtToken = "";
   if (localStorage.getItem(JWT_TOKEN)) {
-      jwtToken = localStorage.getItem(JWT_TOKEN)
+    jwtToken = localStorage.getItem(JWT_TOKEN);
   }
-  const jwtTokenPw = {password, jwtToken}
+  const jwtTokenPw = { password, jwtToken };
   try {
     response = await petPalApi.post(DELETE_PROFILE_PATH, jwtTokenPw);
     console.log("API Response: ", response);

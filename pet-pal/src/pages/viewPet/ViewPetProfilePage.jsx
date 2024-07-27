@@ -86,7 +86,7 @@ const ViewPetProfilePage = () => {
             gender={owner.petGender}
             description={owner.petDescription}
             location={owner.areaLocation}
-            petAge={owner.petAge}
+            age={owner.petAge}
             fullPicture={true}
           />
           {renderArrows ? (
