@@ -1,3 +1,4 @@
+import Joi from 'joi-browser';
 import { useState, useEffect } from "react";
 import {
   Container,
@@ -12,6 +13,11 @@ import useOwnerContext from "../../contexts/useOwnerContext";
 import { JWT_TOKEN } from "../../service/PetPalService";
 import { toast } from "react-toastify";
 import { login } from "../../service/PetPalService";
+
+const schema = {
+  email: Joi.string().email().required(),
+  password: Joi.string().min(1).max(30).required()
+}
 
 function LoginPage() {
   const { setOwnerState } = useOwnerContext();
@@ -35,13 +41,38 @@ function LoginPage() {
     password: "",
   });
 
+  const validate = (event) => {
+    const {name, value} = event.target;
+    const comparisonObj = {[name]: value};
+    const comparisonSchema = {[name]: schema[name]};
+    let result = {}
+    if (name !== "email") {
+      result = Joi.validate(comparisonObj, comparisonSchema);
+    }
+    const { error } = result;
+    if (error) return error.details[0].message;
+    else return null;
+  }
+
   const handleCredentialsChange = (e) => {
     setCredentials((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
+    const errorMessage = validate(e);
+    if (errorMessage) {
+      toast.warning(errorMessage);
+    }
   };
 
   const handleLogin = async () => {
+    const result = Joi.validate(credentials, schema, { abortEarly: false });
+    const {error} = result;
+    if (error) {
+      for (const errMsg of error.details) {
+        toast.error(errMsg.message);
+      }
+    }
+
     const response = await login(credentials);
     if (response.error) {
       toast.error(response.status);

@@ -14,12 +14,13 @@ import { useEffect } from "react";
 import { getOwnerProfile } from "../service/PetPalService";
 import { JWT_TOKEN } from "../service/PetPalService";
 
+const LOGOUT_TEXT = "Logout";
 const navLinkProps = [
-  { text: "View Pets", path: "/view-pet" },
-  { text: "My Profile", path: "/profile" },
-  { text: "Chat", path: "/chat" },
-  { text: "Logout", path: "/" },
-];
+  {text: "View Pets", path: "/view-pet"}, 
+  {text: "My Profile", path: "/profile"},
+  {text: "Chat", path: "/chat"}, 
+  {text: LOGOUT_TEXT, path: "/"},
+]
 
 const Navbar = () => {
   useEffect(() => {
@@ -43,8 +44,8 @@ const Navbar = () => {
 
   const handlePath = (navLinkProp) => {
     console.log(navLinkProp.text);
-    if (navLinkProp.text === "Logout") {
-      localStorage.removeItem("jwtToken");
+    if (navLinkProp.text === LOGOUT_TEXT) {
+      localStorage.removeItem(JWT_TOKEN);
       navigate(navLinkProp.path);
     } else {
       navigate(navLinkProp.path);
