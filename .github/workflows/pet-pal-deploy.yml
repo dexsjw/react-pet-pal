@@ -52,7 +52,7 @@ jobs:
       #     echo test, and deploy your project.
 
       #- name: cd into app folder
-       # run: cd ./guess-number-game-app/
+       # run: cd ./pet-pal/
 
       - name: Install dependencies and build
         # Defining the directory to run commands in this step
@@ -64,7 +64,7 @@ jobs:
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./pet-pal/build
+          path: ./pet-pal/dist
 
 
       # - name: Deploy to GitHub Pages
