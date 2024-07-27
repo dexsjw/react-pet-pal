@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://dexsjw.github.io/react-pet-pal/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,6 +18,7 @@
     "@mui/material": "^5.16.2",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.7.2",
+    "joi-browser": "^13.4.0",
     "normalize.css": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

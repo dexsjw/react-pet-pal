@@ -50,13 +50,13 @@ const JasminePetCard = (props) => {
             <Typography variant="h5">{props.name}</Typography>
             <Typography variant="h5">
               {props.gender.toLowerCase() == "female" ? (
-                <Female></Female>
+                <Female />
               ) : (
-                <Male></Male>
+                <Male />
               )}
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" >
             <CakeOutlined></CakeOutlined>
             <Typography mr={1}>{props.age}</Typography>
             <FmdGoodOutlined></FmdGoodOutlined>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import Joi from 'joi-browser';
+import { useState, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -7,35 +8,79 @@ import {
   Box,
   Avatar,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useOwnerContext from "../../contexts/useOwnerContext";
 import { JWT_TOKEN } from "../../service/PetPalService";
+import { toast } from "react-toastify";
+import { login } from "../../service/PetPalService";
+
+const schema = {
+  email: Joi.string().email().required(),
+  password: Joi.string().min(1).max(30).required()
+}
 
 function LoginPage() {
-  const { handleOwnerLogin } = useOwnerContext();
+  const { setOwnerState } = useOwnerContext();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/view-pet";
+  const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false;
+
+  useEffect(() => {
+    if (location.state?.from?.pathname && !isLoggedIn) {
+      toast.warning("You need to log in to view that page");
+    } else if (isLoggedIn) {
+      toast.warning("You're already logged in, redirecting...");
+      setTimeout(() => {
+        navigate("/view-pet");
+      }, 3000);
+    }
+  }, []);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
+
+  const validate = (event) => {
+    const {name, value} = event.target;
+    const comparisonObj = {[name]: value};
+    const comparisonSchema = {[name]: schema[name]};
+    let result = {}
+    if (name !== "email") {
+      result = Joi.validate(comparisonObj, comparisonSchema);
+    }
+    const { error } = result;
+    if (error) return error.details[0].message;
+    else return null;
+  }
 
   const handleCredentialsChange = (e) => {
     setCredentials((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
+    const errorMessage = validate(e);
+    if (errorMessage) {
+      toast.warning(errorMessage);
+    }
   };
 
   const handleLogin = async () => {
-    try {
-      await handleOwnerLogin(credentials);
-    } catch (error) {
-      console.log("Error: ", error);
-    } finally {
-      if (localStorage.getItem(JWT_TOKEN)) {
-        navigate("/view-pet");
-      } else {
-        alert("Wrong credentials provided!");
+    const result = Joi.validate(credentials, schema, { abortEarly: false });
+    const {error} = result;
+    if (error) {
+      for (const errMsg of error.details) {
+        toast.error(errMsg.message);
       }
+    }
+
+    const response = await login(credentials);
+    if (response.error) {
+      toast.error(response.status);
+    } else {
+      console.log("success!")
+      setOwnerState(response.owner);
+      navigate(from, { replace: true });
+      toast.success("Login successful");
     }
   };
 
