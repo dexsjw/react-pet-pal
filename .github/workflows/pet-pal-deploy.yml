@@ -58,7 +58,7 @@ jobs:
         # Defining the directory to run commands in this step
         # working-directory: ./guess-number-game-app # can use this if "defaults" is not set
         run: |
-          npm ci
+          npm i
           npm run build
 
       - name: Upload GitHub Pages artifact
