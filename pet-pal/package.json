@@ -13,11 +13,11 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mockoon/cli": "^8.3.0",
+    "@mockoon/cli": "^9.0.0",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.2",
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.7.2",
+    "axios": "^1.7.8",
     "joi-browser": "^13.4.0",
     "normalize.css": "^8.0.1",
     "pet-pal": "file:",
