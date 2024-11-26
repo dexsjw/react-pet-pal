@@ -1,6 +1,6 @@
 {
   "uuid": "9fefbf04-f397-495b-a969-117576a9eb3f",
-  "lastMigration": 32,
+  "lastMigration": 33,
   "name": "Pet pal",
   "endpointPrefix": "",
   "latency": 0,
@@ -35,7 +35,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "5d30a364-66f3-4a6a-b864-920b5f52ffe2",
@@ -64,7 +66,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "37492c82-76cb-4c07-9472-aedeeee65343",
@@ -93,7 +97,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "rootChildren": [

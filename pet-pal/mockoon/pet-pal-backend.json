@@ -1,6 +1,6 @@
 {
   "uuid": "5d8e6ea4-8f68-440e-b602-1129d348e6bf",
-  "lastMigration": 32,
+  "lastMigration": 33,
   "name": "Pet pal backend",
   "endpointPrefix": "",
   "latency": 0,
@@ -35,7 +35,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "rootChildren": [
