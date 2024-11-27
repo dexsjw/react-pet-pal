@@ -1,0 +1,61 @@
+// NEW EXPECTED ENTITIES
+OwnerAuth
+{
+    "id": Long,
+    "email": String,
+    "password": String,
+    "ownerId": Long
+}
+
+
+Owner
+{
+    "id": Long,
+    "name": String,
+    "ownerMatches": List<Owner>,    // Owner.id
+    "areaLocation": String,
+    "ownerAuth": OwnerAuth,         // @OneToOne
+    "pets": List<Pet>               // @OneToMany
+}
+
+
+Pet
+{
+    "id": Long,
+    "name": String,
+    "gender": Enum<Gender>,
+    "age": Integer,
+    "isNeutered": boolean,
+    "pictures": List<String>,
+    "description": String,
+    "owner": Owner,                 // @ManyToOne
+    "petData": PetData              // @ManyToOne
+}
+
+
+PetData.java
+{
+    "id": Long,
+    "breed": String,
+    "animalGroup": String,
+    "pet": List<Pet>                // Pet.id
+}
+
+
+ChatRoom.java
+{
+    "id": UUID,
+    "owners": List<Owner>,        // @ManyToMany - Owner.id
+    "chatMessages": List<ChatMessages>
+}
+
+
+ChatMessage.java
+{
+    "id": UUID,
+    "createdTimestamp": LocalDateTime,
+    "updatedTimestamp": LocalDateTime,
+    "message": String,
+    "owner": Owner                  // @ManyToOne - Owner.id
+    "chatRoom": ChatRoom,           // @ManyToOne - ChatRoom.id
+}
