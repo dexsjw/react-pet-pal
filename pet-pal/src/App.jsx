@@ -23,48 +23,46 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <>
-        <Route path="/" element={<Outlet />}>
+      <Route path="/" element={<Outlet />}>
+        <Route
+          // path="/login"
+          index
+          errorElement={<ErrorPage />}
+          element={<LoginPage />}
+        />
+        <Route
+          path="/register"
+          errorElement={<ErrorPage />}
+          element={<RegisterPage />}
+        />
+        <Route element={<Navbar />}>
           <Route
-            // path="/login"
-            index
+            path="/profile"
             errorElement={<ErrorPage />}
-            element={<LoginPage />}
+            element={<OwnerProfilePage />}
           />
           <Route
-            path="/register"
+            path="/view-pet"
             errorElement={<ErrorPage />}
-            element={<RegisterPage />}
+            element={<ViewPetPage />}
           />
-          <Route element={<Navbar />}>
-            <Route
-              path="/profile"
-              errorElement={<ErrorPage />}
-              element={<OwnerProfilePage />}
-            />
-            <Route
-              path="/view-pet"
-              errorElement={<ErrorPage />}
-              element={<ViewPetPage />}
-            />
-            <Route
-              path="/view-pet/:ownerId"
-              errorElement={<ErrorPage />}
-              element={<ViewPetProfilePage />}
-            />
-            <Route
-              path="/chat"
-              errorElement={<ErrorPage />}
-              element={<ChatPage />}
-            />
-          </Route>
           <Route
-            path="*"
+            path="/view-pet/:ownerId"
             errorElement={<ErrorPage />}
-            element={<PageNotFound />}
+            element={<ViewPetProfilePage />}
+          />
+          <Route
+            path="/chat"
+            errorElement={<ErrorPage />}
+            element={<ChatPage />}
           />
         </Route>
-      </>
+        <Route
+          path="*"
+          errorElement={<ErrorPage />}
+          element={<PageNotFound />}
+        />
+      </Route>
     )
   );
 
