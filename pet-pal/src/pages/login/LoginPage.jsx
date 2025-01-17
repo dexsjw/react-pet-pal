@@ -24,7 +24,7 @@ function LoginPage() {
   const { setOwnerState } = useOwnerContext();
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/view-pet";
+  const to = location.state?.from?.pathname || "/view-pet";
   const isLoggedIn = localStorage.getItem(JWT_TOKEN) ? true : false;
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function LoginPage() {
     } else {
       console.log("success!")
       setOwnerState(response.owner);
-      navigate(from, { replace: true });
+      navigate(to, { replace: true });
       toast.success("Login successful");
     }
   };
