@@ -1,0 +1,102 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "pet_pal",
+    "collectionId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+    "dateExported": "2025-01-17T08:01:27.189Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "627e7a52-fe2e-4a29-a28a-65c8eb0c0136",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Get Owner Auth",
+            "url": "http://localhost:3001/owner-auth/{id}",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2025-01-17T06:55:56.036Z",
+            "modified": "2025-01-17T06:57:54.652Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "f40916ba-feb4-45b5-9657-aa350e65925b",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Get All Owner Auth",
+            "url": "http://localhost:3001/owner-auth",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2025-01-17T06:56:42.675Z",
+            "modified": "2025-01-17T06:57:14.698Z",
+            "headers": []
+        },
+        {
+            "_id": "2ee897d4-7e17-437e-a6af-454684c272f8",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Create Owner Auth",
+            "url": "http://localhost:3001/owner-auth",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-01-17T06:57:34.697Z",
+            "modified": "2025-01-17T06:58:54.148Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"test@endpoint.com\",\n  \"password\": \"testing123\",\n  \"ownerId\": 2\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5d38e55c-53a6-42c2-9ef1-492e6c3eed3b",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Update Owner Auth",
+            "url": "http://localhost:3001/owner-auth/{id}",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2025-01-17T07:59:12.723Z",
+            "modified": "2025-01-17T08:00:30.603Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "8776554168496727",
+                    "isPath": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"update@endpoint.com\",\n  \"password\": \"testing123\",\n  \"ownerId\": 2\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6d8a39fc-7856-4afa-aa22-56efc70c78ce",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Delete Owner Auth",
+            "url": "http://localhost:3001/owner-auth/{id}",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2025-01-17T08:00:56.425Z",
+            "modified": "2025-01-17T08:01:11.396Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "8776554168496727",
+                    "isPath": true
+                }
+            ]
+        }
+    ],
+    "ref": "itJkRRmWZpyRGLYYndfVKJVQwVfphgWfVLowbPjRmZOA-tTGxa8oThi59XPlXxw98RM3oeZpZ0lTd7RAmwzQgA"
+}
