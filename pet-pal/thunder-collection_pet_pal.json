@@ -2,15 +2,27 @@
     "clientName": "Thunder Client",
     "collectionName": "pet_pal",
     "collectionId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
-    "dateExported": "2025-01-17T08:01:27.189Z",
+    "dateExported": "2025-01-17T08:58:36.564Z",
     "version": "1.2",
     "folders": [],
     "requests": [
         {
+            "_id": "f40916ba-feb4-45b5-9657-aa350e65925b",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Get All Owner Auth",
+            "url": "http://localhost:3001/owner-auth",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2025-01-17T06:56:42.675Z",
+            "modified": "2025-01-17T06:57:14.698Z",
+            "headers": []
+        },
+        {
             "_id": "627e7a52-fe2e-4a29-a28a-65c8eb0c0136",
             "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
             "containerId": "",
-            "name": "Get Owner Auth",
+            "name": "Get Owner Auth by Id",
             "url": "http://localhost:3001/owner-auth/{id}",
             "method": "GET",
             "sortNum": 10000,
@@ -24,18 +36,6 @@
                     "isPath": true
                 }
             ]
-        },
-        {
-            "_id": "f40916ba-feb4-45b5-9657-aa350e65925b",
-            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
-            "containerId": "",
-            "name": "Get All Owner Auth",
-            "url": "http://localhost:3001/owner-auth",
-            "method": "GET",
-            "sortNum": 20000,
-            "created": "2025-01-17T06:56:42.675Z",
-            "modified": "2025-01-17T06:57:14.698Z",
-            "headers": []
         },
         {
             "_id": "2ee897d4-7e17-437e-a6af-454684c272f8",
@@ -58,7 +58,7 @@
             "_id": "5d38e55c-53a6-42c2-9ef1-492e6c3eed3b",
             "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
             "containerId": "",
-            "name": "Update Owner Auth",
+            "name": "Update Owner Auth By Id",
             "url": "http://localhost:3001/owner-auth/{id}",
             "method": "PUT",
             "sortNum": 40000,
@@ -82,7 +82,7 @@
             "_id": "6d8a39fc-7856-4afa-aa22-56efc70c78ce",
             "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
             "containerId": "",
-            "name": "Delete Owner Auth",
+            "name": "Delete Owner Auth By Id",
             "url": "http://localhost:3001/owner-auth/{id}",
             "method": "DELETE",
             "sortNum": 50000,
@@ -96,7 +96,55 @@
                     "isPath": true
                 }
             ]
+        },
+        {
+            "_id": "77f2289f-7c23-401a-8adf-5e6aabb8d53d",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Get All Owner",
+            "url": "http://localhost:3001/owner",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2025-01-17T08:23:41.771Z",
+            "modified": "2025-01-17T08:28:16.132Z",
+            "headers": []
+        },
+        {
+            "_id": "6c2b4641-1a73-4d6c-94e3-5767180975c4",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Get Owner By Id",
+            "url": "http://localhost:3001/owner/{id}",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2025-01-17T08:26:31.557Z",
+            "modified": "2025-01-17T08:28:28.554Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "1",
+                    "isPath": true
+                }
+            ]
+        },
+        {
+            "_id": "5f597862-dc20-477a-9fc2-59e936de1e21",
+            "colId": "7317bd57-d5dd-40a6-8e5a-cba7f499eb0d",
+            "containerId": "",
+            "name": "Create Owner",
+            "url": "http://localhost:3001/owner",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2025-01-17T08:29:03.542Z",
+            "modified": "2025-01-17T08:36:43.639Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 2,\n  \"name\": \"Maggie Mee\",\n  \"ownerMatches\": [],\n  \"areaLocation\": \"Telok Ayer\",\n  \"ownerAuth\": 1,\n  \"pets\": [\n    {\n      \"id\": 7050242898337926,\n      \"name\": \"Cantik\",\n      \"gender\": \"female\",\n      \"age\": 3,\n      \"isNeutered\": true,\n      \"pictures\": [\n        \"\",\n        \"\",\n        \"\"\n      ],\n      \"description\": \"Solitudo crustulum cibus cupressus vacuus volaticus solio aperio voco suadeo canis voro clam cavus atqui supra suscipio audacia et avarus.\",\n      \"petData\": 1\n    }\n  ]\n}",
+                "form": []
+            }
         }
     ],
-    "ref": "itJkRRmWZpyRGLYYndfVKJVQwVfphgWfVLowbPjRmZOA-tTGxa8oThi59XPlXxw98RM3oeZpZ0lTd7RAmwzQgA"
+    "ref": "itJkRRmWZpyRGLYYndfVKM0A26-z5hTsIbIzInIBsvP7ZGM4BmofRaVpP9hT1f940oC1aD_jpG1NfbDLKI1ctg"
 }
