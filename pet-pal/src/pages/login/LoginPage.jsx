@@ -12,7 +12,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useOwnerContext from "../../contexts/useOwnerContext";
 import { JWT_TOKEN } from "../../service/PetPalService";
 import { toast } from "react-toastify";
-import { login } from "../../service/PetPalService";
+// import { login } from "../../service/PetPalService";
+import { getAllOwnerAuth, getOwner } from '../../service/PetPalMockService';
 
 const schema = {
   email: Joi.string().email().required(),
@@ -73,7 +74,8 @@ function LoginPage() {
       }
     }
 
-    const response = await login(credentials);
+    // const response = await login(credentials);
+    const response = await authenticateLogin(credentials);
     if (response.error) {
       toast.error(response.status);
     } else {
@@ -83,6 +85,23 @@ function LoginPage() {
       toast.success("Login successful");
     }
   };
+
+  const authenticateLogin = async (credentials) => {
+    const allMockOwnerAuth = await getAllOwnerAuth();
+    for (const mockOwnerAuth of allMockOwnerAuth) {
+      if (credentials.email === mockOwnerAuth.email && credentials.password === mockOwnerAuth.password) {
+        const mockOwner = await getOwner(mockOwnerAuth.ownerId);
+        return {
+					owner: mockOwner
+				};
+      } else {
+        return {
+					error: "Invalid credentials!",
+					status: "Invalid credentials!"
+        }
+      }
+    }
+  }
 
   return (
     <Container maxWidth="sm">
